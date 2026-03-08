@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Print City Market</title>
+    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/product.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <div class="app-content">
+            <header class="header">
+                <div class="title-group">
+                    <div class="title-row">
+                        <div class="title-logo">
+                            <img src="../../Base/image/hero.svg" alt="logo">
+                        </div>
+                        <div class="title">
+                            <span class="highlight">Print City</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggle" type="button" class="btn-secondary">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </button>
+
+                    <a class="btn-secondary" href="./liked.html">
+                        <i class="fa-regular fa-heart"></i>
+                        Liked
+                        <span id="likedCountBadge" class="header-count">0</span>
+                    </a>
+
+                    <a class="btn-primary" href="./cart.html">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Savat
+                        <span id="cartCountBadge" class="header-count light">0</span>
+                    </a>
+
+                    <a class="btn-secondary" href="./">
+                        <i class="fa-regular fa-user"></i>
+                        Profil
+                    </a>
+                </div>
+            </header>
+
+            <section class="card hero-card">
+                <div class="hero-content">
+                    <div class="hero-left">
+                        <span class="badge-soft">Print City Market</span>
+                        <h1 class="hero-title">Sifatli buyumlar va poligrafiya mahsulotlari</h1>
+                        <p class="hero-text">
+                            O‘zingizga kerakli mahsulotni toping, liked qiling, savatga qo‘shing va tez buyurtma bering.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Mahsulotlar
+                        <span class="badge-soft mono" id="productsCount">0 ta</span>
+                    </div>
+                    <div class="small" id="productsInfo">Yuklanmoqda...</div>
+                </div>
+
+                <div class="shop-toolbar">
+                    <div class="shop-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="searchInput" type="text" placeholder="Mahsulot nomi bo‘yicha qidirish..." />
+                    </div>
+
+                    <select id="categoryFilter">
+                        <option value="">Barcha kategoriyalar</option>
+                        <option value="buyumlar">Buyumlar</option>
+                        <option value="poligrafiya">Poligrafiya</option>
+                        <option value="ofis">Ofis uchun</option>
+                        <option value="boshqa">Boshqa</option>
+                    </select>
+                </div>
+
+                <div id="productsGrid" class="products-grid"></div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/product.js."></script>
+</body>
+
+</html>

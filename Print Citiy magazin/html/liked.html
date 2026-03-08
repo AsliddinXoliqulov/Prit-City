@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Liked mahsulotlar</title>
+    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/liked.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <div class="app-content">
+            <header class="header">
+                <div class="title-group">
+                    <div class="title-row">
+                        <div class="title-logo"><img src="../../Base/image/hero.svg" alt=""></div>
+                        <div class="title">
+                            <span class="highlight">Print City</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggle" type="button" class="btn-secondary"><i
+                            class="fa-solid fa-lightbulb"></i></button>
+                    <a class="btn-secondary" href="./product.html"><i class="fa-solid fa-house"></i> Bosh sahifa</a>
+                    <a class="btn-primary" href="./cart.html"><i class="fa-solid fa-cart-shopping"></i> Savat</a>
+                </div>
+            </header>
+
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Liked mahsulotlar
+                        <span class="badge-soft mono" id="likedCount">0 ta</span>
+                    </div>
+                    <div class="small" id="likedInfo">Yuklanmoqda...</div>
+                </div>
+
+                <div class="liked-toolbar">
+                    <div class="liked-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="searchInput" type="text" placeholder="Nom bo‘yicha qidirish..." />
+                    </div>
+                </div>
+
+                <div id="likedGrid" class="liked-grid"></div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/liked.js"></script>
+</body>
+
+</html>

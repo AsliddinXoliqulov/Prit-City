@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Savat</title>
+    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/cart.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <div class="app-content">
+            <header class="header">
+                <div class="title-group">
+                    <div class="title-row">
+                        <div class="title-logo"><img src="../../Base/image/hero.svg" alt=""></div>
+                        <div class="title">
+                            <span class="highlight">Print City</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggle" type="button" class="btn-secondary"><i
+                            class="fa-solid fa-lightbulb"></i></button>
+                    <a class="btn-secondary" href="../index.html"><i class="fa-solid fa-house"></i> Bosh sahifa</a>
+                    <a class="btn-secondary" href="./liked.html"><i class="fa-regular fa-heart"></i> Liked</a>
+                </div>
+            </header>
+
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Savat
+                        <span class="badge-soft mono" id="cartCount">0 ta</span>
+                    </div>
+                    <div class="small" id="cartInfo">Tayyor</div>
+                </div>
+
+                <div class="cart-layout">
+                    <div>
+                        <div id="cartList" class="cart-list"></div>
+                    </div>
+
+                    <aside class="cart-summary">
+                        <div class="summary-box">
+                            <div class="section-title">Umumiy ma'lumot</div>
+
+                            <div class="summary-row">
+                                <span>Mahsulotlar soni</span>
+                                <b id="summaryItemsCount">0</b>
+                            </div>
+
+                            <div class="summary-row">
+                                <span>Jami summa</span>
+                                <b class="price" id="summaryTotalPrice">0 so'm</b>
+                            </div>
+
+                            <div class="summary-actions">
+                                <button id="clearCartBtn" class="btn-danger" type="button">
+                                    <i class="fa-regular fa-trash-can"></i> Savatni tozalash
+                                </button>
+
+                                <button id="checkoutBtn" class="btn-primary" type="button">
+                                    <i class="fa-solid fa-bag-shopping"></i> Buyurtma berish
+                                </button>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="./js/cart.js"></script>
+</body>
+
+</html>

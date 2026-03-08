@@ -1,0 +1,132 @@
+.liked-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.liked-search {
+    min-width: 320px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    border-radius: 999px;
+    padding: 0 14px;
+    height: 42px;
+}
+
+.liked-search i {
+    color: var(--text-soft);
+}
+
+.liked-search input {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    min-height: auto;
+}
+
+.liked-search input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.liked-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.liked-card {
+    border: 1px solid var(--table-border);
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+}
+
+.liked-thumb {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: var(--thumb-ph-bg);
+}
+
+.liked-thumb-empty {
+    width: 100%;
+    height: 220px;
+    display: grid;
+    place-items: center;
+    background: var(--thumb-ph-bg);
+    color: var(--thumb-ph-text);
+    font-size: 30px;
+}
+
+.liked-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.liked-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+}
+
+.liked-about {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.45;
+    min-height: 36px;
+}
+
+.liked-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.liked-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: auto;
+}
+
+.liked-actions button,
+.liked-actions a {
+    flex: 1;
+    justify-content: center;
+}
+
+@media (max-width: 700px) {
+    .liked-search {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .liked-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .liked-actions {
+        flex-direction: column;
+    }
+
+    .liked-actions>* {
+        width: 100%;
+    }
+}

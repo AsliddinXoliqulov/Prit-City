@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Profil</title>
+    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <div class="app-content">
+            <header class="header">
+                <div class="title-group">
+                    <div class="title-row">
+                        <div class="title-logo">
+                            <img src="../Base/image/hero.svg" alt="logo">
+                        </div>
+                        <div class="title">
+                            <span class="highlight">Print City</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <button id="themeToggle" type="button" class="btn-secondary">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </button>
+
+                    <a class="btn-secondary" href="./index.html">
+                        <i class="fa-solid fa-house"></i> Bosh sahifa
+                    </a>
+
+                    <a class="btn-secondary" href="./liked.html">
+                        <i class="fa-regular fa-heart"></i> Liked
+                        <span id="likedCountBadge" class="header-count">0</span>
+                    </a>
+
+                    <a class="btn-primary" href="./cart.html">
+                        <i class="fa-solid fa-cart-shopping"></i> Savat
+                        <span id="cartCountBadge" class="header-count light">0</span>
+                    </a>
+                </div>
+            </header>
+
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        Profil
+                        <span class="badge-soft mono" id="profileRoleBadge">user</span>
+                    </div>
+                    <div class="small" id="profileInfo">Yuklanmoqda...</div>
+                </div>
+
+                <div id="profileState" class="empty-row">Yuklanmoqda...</div>
+
+                <div id="profileContent" class="profile-layout hidden">
+                    <div class="profile-main">
+                        <div class="profile-hero">
+                            <div class="profile-avatar" id="profileAvatar">U</div>
+
+                            <div class="profile-hero-text">
+                                <h1 id="profileNameText" class="profile-name">Foydalanuvchi</h1>
+                                <div id="profileEmailText" class="profile-email">email@gmail.com</div>
+                            </div>
+                        </div>
+
+                        <div class="profile-box">
+                            <div class="section-title">Shaxsiy ma'lumotlar</div>
+
+                            <form id="profileForm" class="form-grid">
+                                <div class="field">
+                                    <label for="fullNameInput">Ism</label>
+                                    <input id="fullNameInput" type="text" placeholder="Ismingiz" />
+                                </div>
+
+                                <div class="field">
+                                    <label for="phoneInput">Telefon</label>
+                                    <input id="phoneInput" type="text" placeholder="+998..." />
+                                </div>
+
+                                <div class="field">
+                                    <label for="emailInput">Email</label>
+                                    <input id="emailInput" type="text" disabled />
+                                </div>
+
+                                <div class="field">
+                                    <label for="roleInput">Role</label>
+                                    <input id="roleInput" type="text" disabled />
+                                </div>
+
+                                <div class="field">
+                                    <label for="lastLoginInput">Oxirgi login</label>
+                                    <input id="lastLoginInput" type="text" disabled />
+                                </div>
+
+                                <div class="field">
+                                    <label for="createdAtInput">Ro‘yxatdan o‘tgan vaqt</label>
+                                    <input id="createdAtInput" type="text" disabled />
+                                </div>
+
+                                <div class="form-row-full profile-form-footer">
+                                    <div id="profileStatus" class="status-text"></div>
+
+                                    <div class="profile-form-actions">
+                                        <button id="saveProfileBtn" class="btn-primary" type="submit">
+                                            <i class="fa-regular fa-floppy-disk"></i> Saqlash
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <aside class="profile-side">
+                        <div class="profile-box quick-box">
+                            <div class="section-title">Tezkor bo‘limlar</div>
+
+                            <div class="quick-actions">
+                                <a class="btn-secondary quick-link" href="./my-orders.html">
+                                    <i class="fa-solid fa-bag-shopping"></i>
+                                    Buyurtmalarim
+                                </a>
+
+                                <a class="btn-secondary quick-link" href="./liked.html">
+                                    <i class="fa-regular fa-heart"></i>
+                                    Liked mahsulotlar
+                                </a>
+
+                                <a class="btn-secondary quick-link" href="../index.html">
+                                    <i class="fa-solid fa-key"></i>
+                                    Parolni tiklash
+                                </a>
+
+                                <button id="logoutBtn" class="btn-danger quick-link" type="button">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    Chiqish
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="profile-box profile-summary-box">
+                            <div class="section-title">Profil holati</div>
+
+                            <div class="summary-row">
+                                <span>Role</span>
+                                <b id="summaryRole">user</b>
+                            </div>
+
+                            <div class="summary-row">
+                                <span>Email</span>
+                                <b id="summaryEmail">-</b>
+                            </div>
+
+                            <div class="summary-row">
+                                <span>Telefon</span>
+                                <b id="summaryPhone">-</b>
+                            </div>
+
+                            <div class="summary-row">
+                                <span>Holati</span>
+                                <b id="summaryBlocked">Active</b>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/profile.js"></script>
+</body>
+
+</html>
