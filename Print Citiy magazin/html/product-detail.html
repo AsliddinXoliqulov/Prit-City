@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Mahsulot batafsil</title>
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/product-detail.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="title-group">
+            <div class="title-row">
+                <div class="title-logo">
+                    <img src="../../Base/image/hero.svg" alt="Print City">
+                </div>
+                <div class="title">
+                    <span class="highlight">Print City</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav class="header-actions" id="headerActions">
+                <a class="btn-secondary" href="./product.html">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Bosh sahifa</span>
+                </a>
+
+                <a style="display: none;" class="btn-secondary" href="./liked.html">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>Liked</span>
+                    <span id="likedCountBadge" class="header-count">0</span>
+                </a>
+
+                <a class="btn-secondary" href="./cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Savat</span>
+                    <span style="display: none;" id="cartCountBadge" class="header-count">0</span>
+                </a>
+
+                <a id="profileLink" class="btn-primary" href="./profile.html">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="detail-layout">
+
+        <section class="card detail-card">
+            <div id="detailInfo" class="small detail-info">Yuklanmoqda...</div>
+
+            <div id="productState" class="detail-state">Yuklanmoqda...</div>
+
+            <div id="productContent" class="detail-content hidden">
+                <div class="detail-gallery">
+                    <div class="detail-main-image-wrap">
+                        <img id="mainImage" class="detail-main-image" src="" alt="Mahsulot rasmi">
+                        <div id="mainImageEmpty" class="detail-main-empty hidden">
+                            <i class="fa-regular fa-image"></i>
+                        </div>
+                    </div>
+
+                    <div id="thumbsRow" class="detail-thumbs"></div>
+                </div>
+
+                <div class="detail-main">
+                    <div class="detail-topline">
+                        <span id="productCategory" class="badge-soft">Kategoriya</span>
+                        <span id="productCode" class="badge-soft mono">-</span>
+                    </div>
+
+                    <h1 id="productName" class="detail-title">-</h1>
+
+                    <div class="detail-rating-row">
+                        <div class="detail-rating-box">
+                            <span id="avgStars" class="stars-text">☆☆☆☆☆</span>
+                            <strong id="avgRating">0.0</strong>
+                        </div>
+                        <span id="commentsCount" class="small">0 ta fikr</span>
+                    </div>
+
+                    <div id="productPrice" class="detail-price">0 so'm</div>
+
+                    <p id="productAbout" class="detail-about">-</p>
+
+                    <div class="detail-actions">
+                        <button id="likeBtn" class="btn-secondary" type="button">
+                            <i class="fa-regular fa-heart"></i>
+                            <span>Liked</span>
+                        </button>
+
+                        <button id="addToCartBtn" class="btn-primary" type="button">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Savatga qo‘shish</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card comments-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Fikr va baholar
+                    <span id="commentsCountBadge" class="badge-soft mono">0 ta</span>
+                </div>
+                <div id="commentsInfo" class="small">Yuklanmoqda...</div>
+            </div>
+
+            <div class="review-form-box">
+                <div class="review-form-head">
+                    <h3 id="reviewFormTitle">Fikr qoldirish</h3>
+                    <div id="reviewFormNote" class="small">1 dan 5 gacha baho bering</div>
+                </div>
+
+                <form id="commentForm" class="review-form">
+                    <div class="star-picker" id="starPicker">
+                        <button type="button" class="star-btn" data-value="1">★</button>
+                        <button type="button" class="star-btn" data-value="2">★</button>
+                        <button type="button" class="star-btn" data-value="3">★</button>
+                        <button type="button" class="star-btn" data-value="4">★</button>
+                        <button type="button" class="star-btn" data-value="5">★</button>
+                    </div>
+
+                    <input id="ratingInput" type="hidden" value="0">
+
+                    <textarea id="commentInput" rows="5" placeholder="Mahsulot haqida fikringizni yozing..."></textarea>
+
+                    <div class="review-form-footer">
+                        <div id="commentStatus" class="status-text"></div>
+
+                        <div class="review-form-actions">
+                            <button id="resetCommentBtn" class="btn-secondary" type="button">Tozalash</button>
+                            <button id="submitCommentBtn" class="btn-primary" type="submit">Saqlash</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="commentsList" class="comments-list"></div>
+        </section>
+
+    </main>
+
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/product-detail.js"></script>
+</body>
+
+</html>

@@ -1,52 +1,174 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="dark">
+<html lang="uz" data-theme="light">
 
 <head>
   <meta charset="UTF-8" />
-  <title>Admin · Login</title>
+  <title>Print City · Login</title>
+  <link rel="shortcut icon" href="./Base/image/favicon.svg" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-  <link rel="stylesheet" href="css/base.css" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="./login.css">
 </head>
 
 <body>
-  <div class="login-shell">
-    <div class="login-card">
-
-      <div class="login-header">
-        <img src="./image/hero.svg" alt="">
-        <h2>Admin Panel</h2>
-        <p>Print City</p>
-      </div>
-
-      <form id="loginForm">
-        <div class="field">
-          <label for="emailInput">Email</label>
-          <input id="emailInput" type="email" required placeholder="example@mail.com" />
-        </div>
-
-        <div class="field password-field">
-          <label for="passwordInput">Parol</label>
-
-          <div class="password-input">
-            <input id="passwordInput" type="password" required placeholder="password" />
+  <div class="auth-shell">
+    <div class="auth-card">
+      <div class="auth-left">
+        <div class="brand-top">
+          <div class="brand-logo">
+            <img src="./Base/image/hero.svg" alt="logo">
+          </div>
+          <div class="brand-text">
+            <h1>Print City</h1>
+            <p>Market va admin panel uchun xavfsiz kirish oynasi</p>
           </div>
         </div>
 
-        <button type="submit" class="btn-primary login-btn">
-          <i class="fa-solid fa-right-to-bracket"></i>
-          Kirish
-        </button>
+        <div class="auth-tabs">
+          <button id="loginTabBtn" class="auth-tab active" type="button">Login</button>
+          <button id="registerTabBtn" class="auth-tab" type="button">Register</button>
+        </div>
 
-        <div id="statusText" class="status-text"></div>
-      </form>
+        <div id="authStatus" class="auth-status"></div>
 
+        <div id="loginPanel" class="auth-panel">
+          <form id="loginForm" class="auth-form">
+            <div class="field">
+              <label for="loginEmail">Email</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-envelope"></i>
+                <input id="loginEmail" type="email" placeholder="Email kiriting" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="loginPassword">Parol</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-lock"></i>
+                <input id="loginPassword" type="password" placeholder="Parol kiriting" required>
+                <button class="eye-btn" type="button" data-toggle-password="loginPassword">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- <div class="form-row between">
+              <button id="" class="link-btn" type="button">Parolni unutdim</button>
+            </div> -->
+
+            <button class="btn-primary auth-submit" type="submit">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              Kirish
+            </button>
+          </form>
+        </div>
+
+        <div id="registerPanel" class="auth-panel hidden">
+          <form id="registerForm" class="auth-form">
+            <div class="field">
+              <label for="registerFullName">Ism</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-user"></i>
+                <input id="registerFullName" type="text" placeholder="Ismingizni kiriting" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="registerEmail">Email</label>
+              <div class="input-wrap">
+                <i class="fa-regular fa-envelope"></i>
+                <input id="registerEmail" type="email" placeholder="Email kiriting" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="registerPassword">Parol</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-lock"></i>
+                <input id="registerPassword" type="password" placeholder="Parol kiriting" required>
+                <button class="eye-btn" type="button" data-toggle-password="registerPassword">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="registerPassword2">Parolni tasdiqlang</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-shield-halved"></i>
+                <input id="registerPassword2" type="password" placeholder="Parolni qayta kiriting" required>
+                <button class="eye-btn" type="button" data-toggle-password="registerPassword2">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <button class="btn-primary auth-submit" type="submit">
+              <i class="fa-regular fa-user-plus"></i>
+              Ro‘yxatdan o‘tish
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="auth-right">
+        <!-- <div class="auth-right-badge">Print City</div> -->
+        <h2>Bir joyda qulay boshqaruv</h2>
+        <!-- <p>
+          User roli marketga kiradi, manager va admin esa avtomatik admin panelga yo‘naltiriladi.
+        </p> -->
+
+        <div class="auth-feature-list">
+          <a class="auth-feature" href="./Print Citiy magazin/html/product.html"><i class="fa-solid fa-shop"></i>Loginsiz kirish</a>
+          <!-- <div class="auth-feature">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>Role bo‘yicha avtomatik yo‘naltirish</span>
+          </div> -->
+          <div style="cursor: pointer;" id="forgotPasswordBtn" class="auth-feature">
+            <i class="fa-solid fa-key"></i>
+            <span>Email orqali parolni tiklash</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script type="module" src="./app.js"></script>
+  <div id="forgotModal" class="modal hidden">
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">Parolni tiklash</div>
+        <button id="forgotCloseBtn" class="icon-btn" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="forgotForm" class="auth-form">
+          <div class="field">
+            <label for="forgotEmail">Email</label>
+            <div class="input-wrap">
+              <i class="fa-regular fa-envelope"></i>
+              <input id="forgotEmail" type="email" placeholder="Email kiriting" required>
+            </div>
+          </div>
+
+          <div id="forgotStatus" class="auth-status modal-status"></div>
+
+          <button class="btn-primary auth-submit" type="submit">
+            <i class="fa-solid fa-paper-plane"></i>
+            Link yuborish
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./login.js"></script>
 </body>
 
 </html>

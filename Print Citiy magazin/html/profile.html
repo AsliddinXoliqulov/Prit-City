@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Profil</title>
-    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -16,41 +16,53 @@
 </head>
 
 <body>
-    <div class="app-shell">
-        <div class="app-content">
             <header class="header">
+            
                 <div class="title-group">
                     <div class="title-row">
                         <div class="title-logo">
-                            <img src="../Base/image/hero.svg" alt="logo">
+                            <img src="../../Base/image/hero.svg" alt="Print City">
                         </div>
+            
                         <div class="title">
                             <span class="highlight">Print City</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="header-actions">
-                    <button id="themeToggle" type="button" class="btn-secondary">
-                        <i class="fa-solid fa-lightbulb"></i>
+            
+            
+                <div class="nav-group">
+            
+                    <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                        <i class="fa-solid fa-moon"></i>
                     </button>
-
-                    <a class="btn-secondary" href="./index.html">
-                        <i class="fa-solid fa-house"></i> Bosh sahifa
-                    </a>
-
-                    <a class="btn-secondary" href="./liked.html">
-                        <i class="fa-regular fa-heart"></i> Liked
-                        <span id="likedCountBadge" class="header-count">0</span>
-                    </a>
-
-                    <a class="btn-primary" href="./cart.html">
-                        <i class="fa-solid fa-cart-shopping"></i> Savat
-                        <span id="cartCountBadge" class="header-count light">0</span>
-                    </a>
+            
+                    <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+            
+                    <nav class="header-actions" id="headerActions">
+            
+                        <a class="btn-secondary" href="./product.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Bosh sahifa</span>
+                        </a>
+            
+                        <a class="btn-secondary" href="./cart.html">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Savat</span>
+                        </a>
+            
+                        <a id="profileLink" class="btn-primary" href="./profile.html">
+                            <i class="fa-regular fa-user"></i>
+                            <span>Profil</span>
+                        </a>
+            
+                    </nav>
+            
                 </div>
+            
             </header>
-
             <section class="card">
                 <div class="card-header">
                     <div class="card-title">
@@ -65,8 +77,8 @@
                 <div id="profileContent" class="profile-layout hidden">
                     <div class="profile-main">
                         <div class="profile-hero">
-                            <div class="profile-avatar" id="profileAvatar">U</div>
-
+                            <div style="outline: hidden;" class="profile-avatar" id="profileAvatar"></div>
+                            
                             <div class="profile-hero-text">
                                 <h1 id="profileNameText" class="profile-name">Foydalanuvchi</h1>
                                 <div id="profileEmailText" class="profile-email">email@gmail.com</div>
@@ -93,11 +105,6 @@
                                 </div>
 
                                 <div class="field">
-                                    <label for="roleInput">Role</label>
-                                    <input id="roleInput" type="text" disabled />
-                                </div>
-
-                                <div class="field">
                                     <label for="lastLoginInput">Oxirgi login</label>
                                     <input id="lastLoginInput" type="text" disabled />
                                 </div>
@@ -105,6 +112,11 @@
                                 <div class="field">
                                     <label for="createdAtInput">Ro‘yxatdan o‘tgan vaqt</label>
                                     <input id="createdAtInput" type="text" disabled />
+                                </div>
+
+                                <div class="field">
+                                    <label for="avatarInput">Avatar rasm</label>
+                                    <input id="avatarInput" type="file" accept="image/png, image/jpeg, image/webp">
                                 </div>
 
                                 <div class="form-row-full profile-form-footer">
@@ -135,10 +147,10 @@
                                     Liked mahsulotlar
                                 </a>
 
-                                <a class="btn-secondary quick-link" href="../index.html">
+                                <!-- <a class="btn-secondary quick-link" href="../../index.html">
                                     <i class="fa-solid fa-key"></i>
                                     Parolni tiklash
-                                </a>
+                                </a> -->
 
                                 <button id="logoutBtn" class="btn-danger quick-link" type="button">
                                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -147,8 +159,8 @@
                             </div>
                         </div>
 
-                        <div class="profile-box profile-summary-box">
-                            <div class="section-title">Profil holati</div>
+                        <!-- <div class="profile-box profile-summary-box">
+                            <div class="section-title">Profil Malumorlari</div>
 
                             <div class="summary-row">
                                 <span>Role</span>
@@ -169,12 +181,10 @@
                                 <span>Holati</span>
                                 <b id="summaryBlocked">Active</b>
                             </div>
-                        </div>
+                        </div> -->
                     </aside>
                 </div>
             </section>
-        </div>
-    </div>
 
     <script type="module" src="../../Base/js/base.js"></script>
     <script type="module" src="../js/profile.js"></script>

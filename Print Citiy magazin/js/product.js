@@ -108,10 +108,9 @@ const renderProducts = () => {
               <div class="small">${p.commentsCount} ta fikr</div>
 
               <div class="product-actions">
-                <a class="btn-secondary" href="./product.html?id=${p.id}">
-                  <i class="fa-regular fa-eye"></i> Ko‘rish
+                <a class="btn-secondary" href="./product-detail.html?id=${p.id}">
+                <i class="fa-regular fa-eye"></i> Ko‘rish
                 </a>
-
                 <button class="btn-secondary like-btn ${liked ? "active" : ""}" data-id="${p.id}" type="button">
                   <i class="${liked ? "fa-solid" : "fa-regular"} fa-heart"></i>
                   Liked
@@ -141,7 +140,7 @@ const loadProducts = async () => {
       price,
       category,
       product_images(path, sort_order),
-      product_comments(id, rating)
+      product_comments(rating)
     `)
     .order("created_at", { ascending: false })
 

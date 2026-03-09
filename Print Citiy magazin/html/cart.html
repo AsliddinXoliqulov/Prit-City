@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Savat</title>
-    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -13,28 +13,59 @@
 
     <link rel="stylesheet" href="../../Base/css/base.css">
     <link rel="stylesheet" href="../css/cart.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
 <body>
-    <div class="app-shell">
-        <div class="app-content">
             <header class="header">
+            
                 <div class="title-group">
                     <div class="title-row">
-                        <div class="title-logo"><img src="../../Base/image/hero.svg" alt=""></div>
+                        <div class="title-logo">
+                            <img src="../../Base/image/hero.svg" alt="Print City">
+                        </div>
+            
                         <div class="title">
                             <span class="highlight">Print City</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="header-actions">
-                    <button id="themeToggle" type="button" class="btn-secondary"><i
-                            class="fa-solid fa-lightbulb"></i></button>
-                    <a class="btn-secondary" href="../index.html"><i class="fa-solid fa-house"></i> Bosh sahifa</a>
-                    <a class="btn-secondary" href="./liked.html"><i class="fa-regular fa-heart"></i> Liked</a>
+            
+            
+                <div class="nav-group">
+            
+                    <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+            
+                    <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+            
+                    <nav class="header-actions" id="headerActions">
+            
+                        <a class="btn-secondary" href="./product.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Bosh sahifa</span>
+                        </a>
+            
+                        <a class="btn-secondary" href="./cart.html">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Savat</span>
+                        </a>
+            
+                        <a id="profileLink" class="btn-primary" href="./profile.html">
+                            <i class="fa-regular fa-user"></i>
+                            <span>Profil</span>
+                        </a>
+            
+                    </nav>
+            
                 </div>
+            
             </header>
+
+
 
             <section class="card">
                 <div class="card-header">
@@ -77,11 +108,114 @@
                     </aside>
                 </div>
             </section>
-        </div>
-    </div>
+            
 
+            <div class="checkout-modal" id="checkoutModal">
+                <div class="checkout-overlay" id="checkoutOverlay"></div>
+            
+                <div class="checkout-dialog">
+                    <div class="checkout-head">
+                        <div>
+                            <div class="section-title">Buyurtmani rasmiylashtirish</div>
+                            <div class="small">Ma'lumotlarni to‘ldiring</div>
+                        </div>
+            
+                        <button class="btn-secondary icon-btn" id="checkoutCloseBtn" type="button">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+            
+                    <div class="checkout-body">
+                        <div class="checkout-grid">
+                            <div class="checkout-fields">
+                                <div class="field">
+                                    <label for="orderName">Ism</label>
+                                    <input id="orderName" type="text" placeholder="Ismingiz">
+                                </div>
+            
+                                <div class="field">
+                                    <label for="orderPhone">Telefon</label>
+                                    <input id="orderPhone" type="text" placeholder="+998 90 123 45 67">
+                                </div>
+            
+                                <div  class="field">
+                                    <label for="orderEmail">Email</label>
+                                    <input style="color: var(--text);" disabled id="orderEmail" type="email" placeholder="email@example.com">
+                                </div>
+            
+                                <div class="field">
+                                    <label>Qabul qilish turi</label>
+            
+                                    <div class="delivery-methods">
+                                        <label class="delivery-option">
+                                            <input type="radio" name="deliveryMethod" value="delivery" checked>
+                                            <span>Yetkazib berish</span>
+                                        </label>
+            
+                                        <label style="display: none;" class="delivery-option">
+                                            <input type="radio" name="deliveryMethod" value="pickup">
+                                            <span>Olib ketish</span>
+                                        </label>
+                                    </div>
+                                </div>
+            
+                                <div id="deliveryFields">
+                                    <div class="field">
+                                        <label for="orderAddress">Manzil</label>
+                                        <input id="orderAddress" type="text" placeholder="Manzil">
+                                    </div>
+            
+                                    <div class="field">
+                                        <label for="orderMapSearch">Xaritadan qidirish</label>
+                                        <input id="orderMapSearch" type="text" placeholder="Masalan: Chilonzor, Toshkent">
+                                    </div>
+            
+                                    <div class="field">
+                                        <label>Xarita</label>
+                                        <div id="orderMap" class="order-map"></div>
+                                    </div>
+                                </div>
+            
+                                <div class="field">
+                                    <label for="orderMessage">Izoh</label>
+                                    <textarea id="orderMessage" rows="4" placeholder="Qo‘shimcha izoh"></textarea>
+                                </div>
+                            </div>
+            
+                            <aside class="checkout-summary">
+                                <div class="summary-box">
+                                    <div class="section-title">Buyurtma xulosasi</div>
+            
+                                    <div class="summary-row">
+                                        <span>Mahsulotlar soni</span>
+                                        <b id="modalItemsCount">0</b>
+                                    </div>
+            
+                                    <div class="summary-row">
+                                        <span>Jami summa</span>
+                                        <b class="price" id="modalTotalPrice">0 so'm</b>
+                                    </div>
+            
+                                    <div class="summary-actions">
+                                        <button id="confirmCheckoutBtn" class="btn-primary" type="button">
+                                            <i class="fa-solid fa-check"></i>
+                                            <span id="confirmCheckoutBtnText">Buyurtmani tasdiqlash</span>
+                                        </button>
+            
+                                        <button id="cancelCheckoutBtn" class="btn-secondary" type="button">
+                                            <i class="fa-solid fa-xmark"></i> Bekor qilish
+                                        </button>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script type="module" src="../../Base/js/base.js"></script>
-    <script type="module" src="./js/cart.js"></script>
+    <script type="module" src="../js/cart.js"></script>
 </body>
 
 </html>

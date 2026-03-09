@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Mening buyurtmalarim</title>
-    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -16,43 +16,58 @@
 </head>
 
 <body>
-    <div class="app-shell">
-        <div class="app-content">
             <header class="header">
+            
                 <div class="title-group">
                     <div class="title-row">
                         <div class="title-logo">
-                            <img src="../../Base/image/hero.svg" alt="logo">
+                            <img src="../../Base/image/hero.svg" alt="Print City">
                         </div>
+            
                         <div class="title">
                             <span class="highlight">Print City</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="header-actions">
-                    <button id="themeToggle" type="button" class="btn-secondary">
-                        <i class="fa-solid fa-lightbulb"></i>
+            
+            
+                <div class="nav-group">
+            
+                    <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                        <i class="fa-solid fa-moon"></i>
                     </button>
-
-                    <a class="btn-secondary" href="./index.html">
-                        <i class="fa-solid fa-house"></i> Bosh sahifa
-                    </a>
-
-                    <a class="btn-secondary" href="./profile.html">
-                        <i class="fa-regular fa-user"></i> Profil
-                    </a>
-
-                    <a class="btn-primary" href="./cart.html">
-                        <i class="fa-solid fa-cart-shopping"></i> Savat
-                        <span id="cartCountBadge" class="header-count light">0</span>
-                    </a>
+            
+                    <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+            
+                    <nav class="header-actions" id="headerActions">
+            
+                        <a class="btn-secondary" href="./product.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Bosh sahifa</span>
+                        </a>
+            
+                        <a class="btn-secondary" href="./cart.html">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span>Savat</span>
+                        </a>
+            
+                        <a id="profileLink" class="btn-primary" href="./profile.html">
+                            <i class="fa-regular fa-user"></i>
+                            <span>Profil</span>
+                        </a>
+            
+                    </nav>
+            
                 </div>
+            
             </header>
 
             <section class="card">
                 <div class="card-header">
                     <div class="card-title">
+                        <span id="cartCountBadge" class="header-count">0</span>
                         Mening buyurtmalarim
                         <span class="badge-soft mono" id="ordersCount">0 ta</span>
                     </div>
@@ -91,8 +106,6 @@
                 <div id="ordersState" class="empty-row">Yuklanmoqda...</div>
                 <div id="ordersList" class="orders-list hidden"></div>
             </section>
-        </div>
-    </div>
 
     <script type="module" src="../../Base/js/base.js"></script>
     <script type="module" src="../js/my-orders.js"></script>

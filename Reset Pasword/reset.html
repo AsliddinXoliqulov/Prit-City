@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Parolni yangilash</title>
+    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="./reset.css">
+</head>
+
+<body>
+    <div class="reset-shell">
+        <div class="reset-card">
+            <div class="reset-brand">
+                <div class="reset-logo">
+                    <img src="../Base/image/hero.svg" alt="logo">
+                </div>
+                <h1>Parolni yangilash</h1>
+                <p>Email orqali kelgan havola orqali yangi parol o‘rnating.</p>
+            </div>
+
+            <div id="resetUserInfo" class="reset-user-info"></div>
+            <div id="resetStatus" class="reset-status"></div>
+
+            <form id="resetForm" class="reset-form">
+                <div class="field">
+                    <label for="newPassword">Yangi parol</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock"></i>
+                        <input id="newPassword" type="password" placeholder="Yangi parol" required>
+                        <button class="eye-btn" type="button" data-toggle-password="newPassword">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="newPassword2">Yangi parolni tasdiqlang</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <input id="newPassword2" type="password" placeholder="Yangi parolni qayta kiriting" required>
+                        <button class="eye-btn" type="button" data-toggle-password="newPassword2">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button class="btn-primary" type="submit">
+                    <i class="fa-solid fa-key"></i>
+                    Parolni yangilash
+                </button>
+            </form>
+
+            <a class="back-link" href="../index.html">
+                <i class="fa-solid fa-arrow-left"></i>
+                Login sahifaga qaytish
+            </a>
+        </div>
+    </div>
+
+    <script type="module" src="./reset.js"></script>
+</body>
+
+</html>

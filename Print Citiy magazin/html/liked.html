@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8" />
     <title>Liked mahsulotlar</title>
-    <link rel="shortcut icon" href="../Base/image/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="../../Base/css/base.css">
@@ -16,49 +15,88 @@
 </head>
 
 <body>
-    <div class="app-shell">
-        <div class="app-content">
-            <header class="header">
-                <div class="title-group">
-                    <div class="title-row">
-                        <div class="title-logo"><img src="../../Base/image/hero.svg" alt=""></div>
-                        <div class="title">
-                            <span class="highlight">Print City</span>
-                        </div>
-                    </div>
+
+    <header class="header">
+
+        <div class="title-group">
+            <div class="title-row">
+                <div class="title-logo">
+                    <img src="../../Base/image/hero.svg" alt="Print City">
                 </div>
 
-                <div class="header-actions">
-                    <button id="themeToggle" type="button" class="btn-secondary"><i
-                            class="fa-solid fa-lightbulb"></i></button>
-                    <a class="btn-secondary" href="./product.html"><i class="fa-solid fa-house"></i> Bosh sahifa</a>
-                    <a class="btn-primary" href="./cart.html"><i class="fa-solid fa-cart-shopping"></i> Savat</a>
+                <div class="title">
+                    <span class="highlight">Print City</span>
                 </div>
-            </header>
-
-            <section class="card">
-                <div class="card-header">
-                    <div class="card-title">
-                        Liked mahsulotlar
-                        <span class="badge-soft mono" id="likedCount">0 ta</span>
-                    </div>
-                    <div class="small" id="likedInfo">Yuklanmoqda...</div>
-                </div>
-
-                <div class="liked-toolbar">
-                    <div class="liked-search">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input id="searchInput" type="text" placeholder="Nom bo‘yicha qidirish..." />
-                    </div>
-                </div>
-
-                <div id="likedGrid" class="liked-grid"></div>
-            </section>
+            </div>
         </div>
-    </div>
+
+
+        <div class="nav-group">
+
+            <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav class="header-actions" id="headerActions">
+
+                <a class="btn-secondary" href="./product.html">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Bosh sahifa</span>
+                </a>
+
+                <a class="btn-secondary" href="./cart.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Savat</span>
+                </a>
+
+                <a id="profileLink" class="btn-primary" href="./profile.html">
+                    <i class="fa-regular fa-user"></i>
+                    <span>Profil</span>
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <section class="card">
+
+        <div class="card-header">
+            <div class="card-title">
+                Liked mahsulotlar
+                <span class="badge-soft mono" id="likedCount">0 ta</span>
+            </div>
+
+            <div class="small" id="likedInfo">
+                Yuklanmoqda...
+            </div>
+        </div>
+
+
+        <div class="liked-toolbar">
+
+            <div class="liked-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="searchInput" type="text" placeholder="Nom bo‘yicha qidirish..." />
+            </div>
+
+        </div>
+
+
+        <div id="likedGrid" class="liked-grid"></div>
+
+    </section>
+
 
     <script type="module" src="../../Base/js/base.js"></script>
     <script type="module" src="../js/liked.js"></script>
+
 </body>
 
 </html>

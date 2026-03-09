@@ -11,7 +11,7 @@ export const getMyProfile = async () => {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, phone, email, role, is_blocked")
+    .select("id, full_name, phone, email, role, is_active")
     .eq("id", user.id)
     .single()
 
@@ -28,15 +28,17 @@ export const requireRoles = async (roles = []) => {
   }
 
   const profile = await getMyProfile()
+  // console.log(profile);
 
-  if (!profile || profile.is_blocked) {
+
+  if (!profile || profile.is_active === false) {
     await supabase.auth.signOut()
     location.replace("../../index.html")
     return null
   }
 
   if (roles.length && !roles.includes(profile.role)) {
-    location.replace("../../Print City magazin/index.html")
+    location.replace("../../Print%20Citiy%20magazin/html/product.html")
     return null
   }
 
