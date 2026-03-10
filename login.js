@@ -90,11 +90,11 @@ const redirectByRole = (role) => {
   saveRoleToStorage(role)
 
   if (role === "admin" || role === "manager") {
-    location.href = "./Print%20Citiy%20admin/html/orders.html"
+    location.href = "./Print_Citiy_admin/html/orders.html"
     return
   }
 
-  location.href = "./Print%20Citiy%20magazin/html/product.html"
+  location.href = "./Print_Citiy_magazin/html/product.html"
 }
 
 const getProfileByUserId = async (userId) => {
