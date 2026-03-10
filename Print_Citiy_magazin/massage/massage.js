@@ -26,10 +26,14 @@ const getSessionUser = async () => {
 
 const resolveImageUrl = (path) => {
   if (!path) return ""
-  if (path.startsWith("http://") || path.startsWith("https://")) return path
 
-  const { data } = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(path)
-  return data.publicUrl
+  const value = String(path).trim()
+
+  if (!value) return ""
+  if (value.startsWith("http://") || value.startsWith("https://")) return value
+
+  const { data } = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(value)
+  return data?.publicUrl || ""
 }
 
 const getProductDetailLink = (productId) => {
@@ -47,8 +51,7 @@ const showNotification = () => {
 const setNotificationContent = (product, index, total) => {
   if (!notificationBox || !notificationMedia || !notificationTitle || !notificationText || !notificationLink) return
 
-  const imageSrc = resolveImageUrl(product.product_image || "")
-    
+  const imageSrc = product.product_image || ""
 
   notificationMedia.innerHTML = imageSrc
     ? `<img src="${imageSrc}" alt="${product.product_name || "Mahsulot"}">`
@@ -145,7 +148,6 @@ const loadCompletedProductsForReview = async () => {
   }
 
   const commentedIds = new Set((myComments || []).map((item) => item.product_id))
-
   const availableProducts = uniqueProducts.filter((item) => !commentedIds.has(item.product_id))
 
   if (!availableProducts.length) {
@@ -153,7 +155,31 @@ const loadCompletedProductsForReview = async () => {
     return
   }
 
-  notificationQueue = availableProducts
+  const availableIds = availableProducts.map((item) => item.product_id)
+
+  const { data: imageRows, error: imageError } = await supabase
+    .from("product_images")
+    .select("product_id, path, sort_order")
+    .in("product_id", availableIds)
+    .order("sort_order", { ascending: true })
+
+  if (imageError) {
+    console.log("review notification images error:", imageError)
+  }
+
+  const firstImageMap = new Map()
+
+  ;(imageRows || []).forEach((row) => {
+    if (!firstImageMap.has(row.product_id) && row.path) {
+      firstImageMap.set(row.product_id, resolveImageUrl(row.path))
+    }
+  })
+
+  notificationQueue = availableProducts.map((item) => ({
+    ...item,
+    product_image: firstImageMap.get(item.product_id) || item.product_image || ""
+  }))
+
   currentNotificationIndex = 0
   showNextNotification()
 }

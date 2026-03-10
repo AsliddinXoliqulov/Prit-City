@@ -155,7 +155,7 @@ const orderCard = (o) => {
     }
 
     if (st !== 3) {
-      statusButtons += `<button class="btn-primary order-action" data-act="to3" data-id="${o.id}" type="button">Yakunlash</button>`
+      statusButtons += `<button class="btn-secondary order-action" data-act="to3" data-id="${o.id}" type="button">Yakunlash</button>`
     }
   }
 
