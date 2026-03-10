@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Product Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/products.css" />
+    <link rel="stylesheet" href="../../Base/css/base.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="title-group">
+            <div class="title-row">
+                <div class="title-logo">
+                    <img src="../../Base/image/hero.svg" alt="Print City">
+                </div>
+                <div class="title">
+                    <span class="highlight">Print City</span>
+                </div>
+            </div>
+        </div>
+    
+        <div class="nav-group">
+            <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+    
+            <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+    
+            <nav class="header-actions " id="headerActions">
+                <a class="btn-secondary hide-for-manager" href="./products.html">
+                    <i class="fa-solid fa-shop"></i>
+                    <span>Mahsulotlar</span>
+                </a>
+    
+                <a class="btn-secondary" href="./orders.html">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    <span>Buyurtmalar</span>
+                </a>
+    
+                <a class="btn-secondary hide-for-manager" href="./users.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+    
+    
+                <a class="btn-secondary" href="./profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+
+    <main class="page-wrap page-shell" style="max-width: 1100px; margin: 0 auto; padding: 24px;">
+        <div class="hide-for-manager"
+            style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:24px; flex-wrap:wrap;">
+            <button id="backBtn" class="btn-secondary" type="button">
+                <i class="fa-solid fa-arrow-left"></i> Orqaga
+            </button>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button id="editBtn" class="btn-secondary" type="button">
+                    <i class="fa-regular fa-pen-to-square"></i> Tahrirlash
+                </button>
+                <button id="deleteBtn" class="btn-danger" type="button">
+                    <i class="fa-regular fa-trash-can"></i> O‘chirish
+                </button>
+            </div>
+        </div>
+
+        <div id="detailState" class="empty-row">Yuklanmoqda...</div>
+
+        <section id="detailContent" class="hidden">
+            <div class="product-card" style="padding: 18px;">
+                <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:24px;" class="detail-grid">
+                    <div>
+                        <div id="detailGallery" class="product-gallery-grid"></div>
+                    </div>
+
+                    <div>
+                        <div class="small mono" id="detailId">-</div>
+                        <h1 id="detailName" style="margin:10px 0 8px;">-</h1>
+                        <div id="detailCategory" class="category-chip" style="display:inline-flex;">-</div>
+
+                        <div style="margin-top:18px; font-size:28px; font-weight:700;" id="detailPrice">0 so'm</div>
+
+                        <div style="margin-top:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <span id="detailStars" class="stars">☆☆☆☆☆</span>
+                            <span id="detailRatingText">0.0 / 5</span>
+                            <span class="small" id="detailCommentsCount">0 ta fikr</span>
+                        </div>
+
+                        <div style="margin-top:18px;" class="small">
+                            Yaratilgan vaqt: <span id="detailCreatedAt">-</span>
+                        </div>
+
+                        <div style="margin-top:22px;">
+                            <h3 style="margin-bottom:8px;">Mahsulot haqida</h3>
+                            <div id="detailAbout">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section style="margin-top:24px;">
+                <div class="product-card" style="padding:18px;">
+                    <div
+                        style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:18px;">
+                        <h2 style="margin:0;">Kommentlar</h2>
+
+                        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                            <strong id="summaryRatingValue">0.0</strong>
+                            <span id="summaryStars" class="stars">☆☆☆☆☆</span>
+                            <span id="summaryCount" class="small">0 ta fikr</span>
+                        </div>
+                    </div>
+
+                    <div id="commentsList">
+                        <div class="empty-row">Yuklanmoqda...</div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+<div id="productFormModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title" id="formModalTitle">Yangi tovar</div>
+            <button id="formModalCloseBtn" class="btn-secondary" type="button">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="productForm">
+                <input type="hidden" id="productId" />
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="nameInput">Nomi</label>
+                        <input id="nameInput" type="text" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="priceInput">Narx</label>
+                        <input id="priceInput" type="number" min="0" step="1" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="categoryInput">Kategoriya</label>
+                        <select id="categoryInput" required>
+                            <option value="">Tanlang...</option>
+                            <option value="buyumlar">Buyumlar</option>
+                            <option value="poligrafiya">Poligrafiya</option>
+                            <option value="ofis">Ofis uchun</option>
+                            <option value="boshqa">Boshqa</option>
+                        </select>
+                    </div>
+
+                    <div class="field form-row-full">
+                        <label for="aboutInput">Tavsif</label>
+                        <textarea id="aboutInput"></textarea>
+                    </div>
+
+                    <div class="field form-row-full">
+                        <label for="imgFileInput">Rasm yuklash</label>
+                        <input id="imgFileInput" type="file" multiple accept="image/*" />
+                    </div>
+
+                    <div class="field form-row-full">
+                        <label>Yangi rasmlar</label>
+                        <div class="preview-list" id="selectedFilesPreview">
+                            <div class="empty-row">Rasm tanlanmagan</div>
+                        </div>
+                    </div>
+
+                    <div class="field form-row-full">
+                        <label>Mavjud rasmlar</label>
+                        <div class="preview-list" id="existingImagesBox">
+                            <div class="empty-row">Mavjud rasm yo‘q</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div class="status-text" id="formStatus"></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="btnResetForm">Tozalash</button>
+                        <button type="submit" class="btn-primary">Saqlash</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    <script type="module">
+        import { hideForManager } from "../../Base/js/roleManagerHide.js"
+        hideForManager()
+    </script>
+    <script type="module" src="../js/product-form.js"></script>
+    <script type="module" src="../js/product-detail.js"></script>
+    <script type="module" src="../../Base/js/base.js"></script>
+</body>
+
+</html>

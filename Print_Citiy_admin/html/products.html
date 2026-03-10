@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin · Products</title>
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/products.css">
+</head>
+
+<body class="hide-for-manager">
+    <header class="header">
+        <div class="title-group">
+            <div class="title-row">
+                <div class="title-logo">
+                    <img src="../../Base/image/hero.svg" alt="Print City">
+                </div>
+                <div class="title">
+                    <span class="highlight">Print City</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav class="header-actions" id="headerActions">
+                <a class="btn-secondary" href="./products.html">
+                    <i class="fa-solid fa-shop"></i>
+                    <span>Mahsulotlar</span>
+                </a>
+
+                <a class="btn-secondary" href="./orders.html">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    <span>Buyurtmalar</span>
+                </a>
+
+                <a class="btn-secondary" href="./users.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+
+                <a class="btn-secondary" href="./profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="card">
+        <div class="card-header">
+            <div class="card-title">
+                Mahsulotlar
+                <span class="badge-soft mono" id="totalCount">0 ta</span>
+            </div>
+
+            <div class="small stat-info" id="statInfo">Yuklanmoqda...</div>
+        </div>
+
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="searchInput" type="text" placeholder="ID yoki nom bo‘yicha qidirish..." />
+                </div>
+
+                <select id="categoryFilter">
+                    <option value="">Barcha kategoriyalar</option>
+                    <option value="buyumlar">Buyumlar</option>
+                    <option value="poligrafiya">Poligrafiya</option>
+                    <option value="ofis">Ofis uchun</option>
+                    <option value="boshqa">Boshqa</option>
+                </select>
+            </div>
+
+            <div class="toolbar-right">
+                <button id="viewToggleBtn" class="btn-secondary" type="button">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    <span id="viewToggleText"></span>
+                </button>
+
+                <button style="display: none;" id="btnReloadProducts" class="btn-secondary" type="button">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Yangilash</span>
+                </button>
+
+                <button id="btnNewProduct" class="btn-primary" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Yangi tovar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="products-layout">
+            <div class="products-grid" id="productsGrid"></div>
+
+            <div class="products-table-wrap hidden" id="productsTableWrap">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Rasm</th>
+                            <th>ID</th>
+                            <th>Nomi</th>
+                            <th>Kategoriya</th>
+                            <th>Narx</th>
+                            <th>Reyting</th>
+                            <th>Fikrlar</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody"></tbody>
+                </table>
+            </div>
+
+            <div class="empty-state hidden" id="productsEmpty">
+                <i class="fa-regular fa-folder-open"></i>
+                <div>Hozircha mahsulot yo‘q.</div>
+            </div>
+        </div>
+    </section>
+
+    <div id="productFormModal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title" id="formModalTitle">Yangi tovar</div>
+                <button id="formModalCloseBtn" class="btn-secondary" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId" />
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="nameInput">Nomi</label>
+                            <input id="nameInput" type="text" required />
+                        </div>
+
+                        <div class="field">
+                            <label for="priceInput">Narx</label>
+                            <input id="priceInput" type="number" min="0" step="1" required />
+                        </div>
+
+                        <div class="field">
+                            <label for="categoryInput">Kategoriya</label>
+                            <select id="categoryInput" required>
+                                <option value="">Tanlang...</option>
+                                <option value="buyumlar">Buyumlar</option>
+                                <option value="poligrafiya">Poligrafiya</option>
+                                <option value="ofis">Ofis uchun</option>
+                                <option value="boshqa">Boshqa</option>
+                            </select>
+                        </div>
+
+                        <div class="field form-row-full">
+                            <label for="aboutInput">Tavsif</label>
+                            <textarea id="aboutInput"></textarea>
+                        </div>
+
+                        <div class="field form-row-full">
+                            <label for="imgFileInput">Rasm yuklash</label>
+                            <input id="imgFileInput" type="file" multiple accept="image/*" />
+                        </div>
+
+                        <div class="field form-row-full">
+                            <label>Yangi rasmlar</label>
+                            <div class="preview-list" id="selectedFilesPreview">
+                                <div class="empty-row">Rasm tanlanmagan</div>
+                            </div>
+                        </div>
+
+                        <div class="field form-row-full">
+                            <label>Mavjud rasmlar</label>
+                            <div class="preview-list" id="existingImagesBox">
+                                <div class="empty-row">Mavjud rasm yo‘q</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="status-text" id="formStatus"></div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="btnResetForm">Tozalash</button>
+                            <button type="submit" class="btn-primary">Saqlash</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { hideForManager } from "../../Base/js/roleManagerHide.js"
+        hideForManager()
+    </script>
+
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/product-form.js"></script>
+    <script type="module" src="../js/products.js"></script>
+</body>
+
+</html>

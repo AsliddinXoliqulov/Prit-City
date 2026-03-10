@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin · Users</title>
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/users.css">
+</head>
+
+<body class="hide-for-manager">
+    <header class="header">
+        <div class="title-group">
+            <div class="title-row">
+                <div class="title-logo">
+                    <img src="../../Base/image/hero.svg" alt="Print City">
+                </div>
+                <div class="title">
+                    <span class="highlight">Print City</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav class="header-actions" id="headerActions">
+                <a class="btn-secondary" href="./products.html">
+                    <i class="fa-solid fa-shop"></i>
+                    <span>Mahsulotlar</span>
+                </a>
+
+                <a class="btn-secondary" href="./orders.html">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    <span>Buyurtmalar</span>
+                </a>
+
+                <a class="btn-secondary" href="./users.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+
+                <a class="btn-secondary" href="./profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="card">
+        <div class="users-top">
+            <div class="tabs">
+                <div class="tab-wrap">
+                    <button class="tab-btn active" data-role="user" type="button">Users</button>
+                    <span class="role_count" id="usersCount">0</span>
+                </div>
+
+                <div class="tab-wrap">
+                    <button class="tab-btn" data-role="manager" type="button">Managers</button>
+                    <span class="role_count" id="managersCount">0</span>
+                </div>
+
+                <div class="tab-wrap">
+                    <button class="tab-btn" data-role="admin" type="button">Admins</button>
+                    <span class="role_count" id="adminsCount">0</span>
+                </div>
+            </div>
+
+            <div class="users-stats">
+                <div id="usersInfo">Yuklanmoqda...</div>
+            </div>
+        </div>
+
+        <div class="users-toolbar">
+            <div class="users-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="searchInput" type="text" placeholder="Ism, email yoki telefon bo‘yicha qidirish..." />
+            </div>
+
+            <div class="users-toolbar-actions">
+                <button id="viewToggleBtn" class="btn-secondary icon-btn" type="button">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="usersCardView" class="users-grid"></div>
+
+        <div id="usersTableView" class="users-table-wrap hidden">
+            <div class="users-table-scroll">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Foydalanuvchi</th>
+                            <th>Telefon</th>
+                            <th>Role</th>
+                            <th>Holati</th>
+                            <th>Oxirgi login</th>
+                            <th>Yaratilgan</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <div id="userModal" class="modal hidden">
+        <div class="modal-backdrop" data-close="1"></div>
+        <div class="modal-card" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <div class="modal-title">Foydalanuvchi ma'lumoti</div>
+                <button id="userModalCloseBtn" class="btn-secondary" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="user-detail-grid">
+                    <div class="detail-box">
+                        <div class="detail-label">ID</div>
+                        <div class="detail-value mono" id="detailUserId"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Ism</div>
+                        <div class="detail-value" id="detailUserName"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value" id="detailUserEmail"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Telefon</div>
+                        <div class="detail-value" id="detailUserPhone"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Role</div>
+                        <div class="detail-value" id="detailUserRole"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Holati</div>
+                        <div class="detail-value" id="detailUserStatus"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Oxirgi login</div>
+                        <div class="detail-value" id="detailUserLastLogin"></div>
+                    </div>
+
+                    <div class="detail-box">
+                        <div class="detail-label">Yaratilgan vaqt</div>
+                        <div class="detail-value" id="detailUserCreatedAt"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="modalEditUserBtn" class="btn-secondary" type="button">
+                    <i class="fa-regular fa-pen-to-square"></i> Tahrirlash
+                </button>
+                <!-- <button id="modalToggleActiveBtn" class="btn-danger" type="button">
+                    <i class="fa-solid fa-ban"></i> Block
+                </button> -->
+            </div>
+        </div>
+    </div>
+
+    <div id="userFormModal" class="modal hidden">
+        <div class="modal-backdrop" data-close="1"></div>
+        <div class="modal-card" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <div class="modal-title">Foydalanuvchini tahrirlash</div>
+                <button id="userFormCloseBtn" class="btn-secondary" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="userForm">
+                    <input type="hidden" id="editUserId" />
+
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="editFullName">Ism</label>
+                            <input id="editFullName" type="text" />
+                        </div>
+
+                        <div class="field">
+                            <label for="editPhone">Telefon</label>
+                            <input id="editPhone" type="text" />
+                        </div>
+
+                        <div class="field">
+                            <label for="editRole">Role</label>
+                            <select id="editRole">
+                                <option value="user">User</option>
+                                <option value="manager">Manager</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="editBlocked">Holati</label>
+                            <select id="editBlocked">
+                                <option value="false">Faol</option>
+                                <option value="true">Nofaol</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="status-text" id="userFormStatus"></div>
+                        <button class="btn-primary" type="submit">Saqlash</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import { hideForManager } from "../../Base/js/roleManagerHide.js"
+        hideForManager()
+    </script>
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/users.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin · Profil</title>
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="title-group">
+            <div class="title-row">
+                <div class="title-logo">
+                    <img src="../../Base/image/hero.svg" alt="Print City">
+                </div>
+                <div class="title">
+                    <span class="highlight">Print City</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+
+            <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <nav class="header-actions " id="headerActions">
+                <a class="btn-secondary hide-for-manager" href="./products.html">
+                    <i class="fa-solid fa-shop"></i>
+                    <span>Mahsulotlar</span>
+                </a>
+
+                <a class="btn-secondary" href="./orders.html">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    <span>Buyurtmalar</span>
+                </a>
+
+                <a class="btn-secondary hide-for-manager" href="./users.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Users</span>
+                </a>
+
+                <a class="btn-secondary" href="./profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="profile-layout">
+        <section class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    Profil ma’lumotlari
+                    <span class="badge-soft" id="roleBadge">-</span>
+                </div>
+
+                <div class="card-header-actions">
+                    <button type="button" class="btn-primary" id="openEditModalBtn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Tahrirlash</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="profile-top">
+                <div class="profile-avatar-box">
+                    <div id="avatarPreview" class="profile-avatar">PC</div>
+                    <!-- <div class="small" id="profileStatus">-</div> -->
+                    <div class="small clickable-info" id="profileInfo">Yuklanmoqda...</div>
+                </div>
+
+                <div class="profile-main-info">
+                    <h2 id="profileName">-</h2>
+
+                    <div class="profile-meta">
+                        <div class="profile-meta-line">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span id="profileEmail">-</span>
+                        </div>
+
+                        <div class="profile-meta-line">
+                            <i class="fa-solid fa-phone"></i>
+                            <span id="profilePhone">-</span>
+                        </div>
+
+                        <div class="profile-meta-line">
+                            <i class="fa-regular fa-calendar"></i>
+                            <span id="profileCreated">-</span>
+                        </div>
+
+                        <div class="profile-meta-line">
+                            <i class="fa-regular fa-clock"></i>
+                            <span id="profileLastLogin">-</span>
+                        </div>
+
+                        <div class="profile-meta-line">
+                            <i class="fa-solid fa-user-shield"></i>
+                            <span id="profileRole">-</span>
+                        </div>
+
+                        <div id="logoutBtn" class="profile-meta-line">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Chiqish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal-backdrop" id="editProfileModal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <div>
+                    <h3>Profilni tahrirlash</h3>
+                    <p>Barcha o‘zgarishlar eski parol bilan tasdiqlanadi</p>
+                </div>
+
+                <button type="button" class="modal-close btn-secondary icon-btn" id="closeEditModalBtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="profileEditForm" class="modal-form">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="fullNameInput">Ism</label>
+                        <input id="fullNameInput" type="text" placeholder="Ismingiz">
+                    </div>
+
+                    <div class="field">
+                        <label for="phoneInput">Telefon</label>
+                        <input id="phoneInput" type="text" placeholder="+998...">
+                    </div>
+
+                    <div class="field form-row-full">
+                        <label for="emailInput">Email</label>
+                        <input disabled id="emailInput" type="email" placeholder="example@gmail.com">
+                    </div>
+
+                    <div class="field form-row-full">
+                        <label for="avatarInput">Avatar rasm</label>
+                        <input id="avatarInput" type="file" accept="image/png, image/jpeg, image/webp">
+                    </div>
+                </div>
+
+                <div class="modal-divider"></div>
+
+            <div class="form-grid">
+            
+                <div class="field form-row-full">
+                    <label for="currentPasswordInput">Eski parol</label>
+                    <input id="currentPasswordInput" type="password" placeholder="Tasdiqlash uchun eski parol">
+                </div>
+            
+                <button type="button" class="btn-secondary form-row-full" id="togglePasswordFields">
+                    Parolni o‘zgartirish
+                </button>
+            
+                <div id="newPasswordFields" class="password-hidden">
+                    <div class="field">
+                        <label for="newPasswordInput">Yangi parol</label>
+                        <input id="newPasswordInput" type="password" placeholder="Yangi parol">
+                    </div>
+
+                    <div class="field">
+                        <label for="confirmPasswordInput">Yangi parolni tasdiqlash</label>
+                        <input id="confirmPasswordInput" type="password" placeholder="Yangi parolni qayta kiriting">
+                    </div>
+                </div>
+            
+            </div>
+
+                <div class="form-footer">
+                    <div id="profileFormStatus" class="status-text"></div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="resetProfileBtn">Tozalash</button>
+                        <button type="submit" class="btn-primary">Saqlash</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="module">
+        import { hideForManager } from "../../Base/js/roleManagerHide.js"
+        hideForManager()
+    </script>
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/profile.js"></script>
+</body>
+
+</html>

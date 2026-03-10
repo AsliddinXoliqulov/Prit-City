@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin · Orders</title>
+    <link rel="shortcut icon" href="../../Base/image/favicon.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="../../Base/css/base.css">
+    <link rel="stylesheet" href="../css/orders.css">
+</head>
+<body>
+        <header class="header">
+            <div class="title-group">
+                <div class="title-row">
+                    <div class="title-logo">
+                        <img src="../../Base/image/hero.svg" alt="Print City">
+                    </div>
+                    <div class="title">
+                        <span class="highlight">Print City</span>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="nav-group">
+                <button id="themeToggle" type="button" class="btn-secondary icon-btn">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+        
+                <button class="btn-secondary menu-toggle icon-btn" id="menuToggle" type="button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+        
+                <nav class="header-actions" id="headerActions">
+                    <a class="btn-secondary hide-for-manager" href="./products.html">
+                        <i class="fa-solid fa-shop"></i>
+                        <span>Mahsulotlar</span>
+                    </a>
+                    
+                    <a class="btn-secondary" href="./orders.html">
+                        <i class="fa-solid fa-cart-arrow-down"></i>
+                        <span>Buyurtmalar</span>
+                    </a>
+        
+                    <a class="btn-secondary hide-for-manager" href="./users.html">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Users</span>
+                    </a>
+        
+        
+                    <a class="btn-secondary" href="./profile.html">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Profil</span>
+                    </a>
+                </nav>
+            </div>
+        </header>
+
+            <section class="card">
+                <div class="orders-top">
+                    <div class="tabs">
+                        <div class="tab-wrap">
+                            <button class="tab-btn active" data-tab="1" type="button">Yangi</button>
+                            <span class="order_count" id="new_count">0</span>
+                        </div>
+
+                        <div class="tab-wrap">
+                            <button class="tab-btn" data-tab="2" type="button">
+                                <i style="color: rgb(255, 195, 0);" class="fa-solid fa-gears"></i>
+                                Jarayonda
+                            </button>
+                            <span class="order_count" id="delivering_count">0</span>
+                        </div>
+
+                        <div class="tab-wrap">
+                            <button class="tab-btn" data-tab="3" type="button">
+                                <i style="color: rgb(78, 255, 47);" class="fa-solid fa-envelope-circle-check"></i>
+                                Yakunlangan
+                            </button>
+                            <span class="order_count" id="completed_count">0</span>
+                        </div>
+
+                        <div class="tab-wrap">
+                            <button class="tab-btn danger-tab" data-tab="0" type="button">
+                                <i class="fa-solid fa-ban"></i>
+                                Bekor qilingan
+                            </button>
+                            <span class="order_count danger-count" id="cancelled_count">0</span>
+                        </div>
+                    </div>
+
+                    <div class="orders-stats">
+                        <div id="ordersInfo">Yuklanmoqda...</div>
+                    </div>
+                </div>
+
+                <div class="orders-toolbar">
+                    <div class="orders-search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="searchInput" type="text" placeholder="ID, ism, telefon yoki email bo‘yicha qidirish..." />
+                    </div>
+
+                    <button id="btnReloadOrders" class="btn-secondary" type="button">
+                        <i class="fa-solid fa-arrows-rotate"></i> Yangilash
+                    </button>
+                </div>
+
+                <div id="ordersList" class="orders-list"></div>
+            </section>
+
+            <div id="mapModal" class="modal hidden">
+                <div class="modal-backdrop" data-close="1"></div>
+                <div class="modal-card map-card" role="dialog" aria-modal="true">
+                    <div class="modal-header">
+                        <div class="modal-title"><i class="fa-solid fa-location-arrow"></i> Joylashuv</div>
+                        <button id="mapCloseBtn" class="btn-secondary" type="button"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="leafletMap" class="map-box"></div>
+                        <div class="small" id="mapText"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="noteModal" class="modal hidden">
+                <div class="modal-backdrop" data-close="1"></div>
+                <div class="modal-card" role="dialog" aria-modal="true">
+                    <div class="modal-header">
+                        <div class="modal-title">Admin eslatma</div>
+                        <button id="noteCloseBtn" class="btn-secondary" type="button"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="hidden" id="noteOrderId" />
+                        <div class="field">
+                            <label for="noteTextarea">Eslatma matni</label>
+                            <textarea id="noteTextarea" placeholder="Admin yoki manager uchun ichki eslatma..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="status-text" id="noteStatus"></div>
+                        <button id="saveNoteBtn" class="btn-primary" type="button">Saqlash</button>
+                    </div>
+                </div>
+            </div>
+            
+
+    <script type="module">
+  import { hideForManager } from "../../Base/js/roleManagerHide.js"
+  hideForManager()
+</script>     
+   
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="../../Base/js/base.js"></script>
+    <script type="module" src="../js/orders.js"></script>
+</body>
+</html>
