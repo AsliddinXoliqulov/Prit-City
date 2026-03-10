@@ -38,7 +38,7 @@ export const requireRoles = async (roles = []) => {
   }
 
   if (roles.length && !roles.includes(profile.role)) {
-    location.replace("../../Print%20Citiy%20magazin/html/product.html")
+    location.replace("../../Print_Citiy_magazin/html/product.html")
     return null
   }
 

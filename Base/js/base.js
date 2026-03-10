@@ -61,7 +61,7 @@ const updateProfileLink = async () => {
       Login
     `
   } else {
-    profileLink.href = "/Print Citiy magazin/html/profile.html"
+    profileLink.href = "/Print_Citiy_magazin/html/profile.html"
     profileLink.innerHTML = `
       <i class="fa-regular fa-user"></i>
       Profil

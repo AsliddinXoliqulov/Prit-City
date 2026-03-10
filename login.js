@@ -23,7 +23,7 @@ const forgotForm = document.getElementById("forgotForm")
 const forgotEmail = document.getElementById("forgotEmail")
 const forgotStatus = document.getElementById("forgotStatus")
 
-const RESET_REDIRECT_URL = `${location.origin}/Reset%20Pasword/reset.html`
+const RESET_REDIRECT_URL = `${location.origin}/Reset_Pasword/reset.html`
 const showToast = (message, type = "success") => {
   const toast = document.createElement("div")
   toast.className = `toast toast-${type}`
