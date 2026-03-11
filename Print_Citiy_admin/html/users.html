@@ -133,7 +133,7 @@
             <div class="modal-body">
                 <div class="user-detail-grid">
                     <div class="detail-box">
-                        <div class="detail-label">ID</div>
+                        <div class="detail-label">User code</div>
                         <div class="detail-value mono" id="detailUserId"></div>
                     </div>
 
@@ -198,8 +198,15 @@
             <div class="modal-body">
                 <form id="userForm">
                     <input type="hidden" id="editUserId" />
+                    <input type="hidden" id="editUserAvatarUrl" />
 
                     <div class="form-grid">
+                        <div class="field">
+                            <label for="editUserCode">User code</label>
+                            <input id="editUserCode" type="text" disabled />
+                        </div>
+
+
                         <div class="field">
                             <label for="editFullName">Ism</label>
                             <input id="editFullName" type="text" />
@@ -220,17 +227,40 @@
                         </div>
 
                         <div class="field">
-                            <label for="editBlocked">Holati</label>
-                            <select id="editBlocked">
+                            <label for="editActive">Holati</label>
+                            <select id="editActive">
                                 <option value="false">Faol</option>
                                 <option value="true">Nofaol</option>
                             </select>
                         </div>
+
+                        <!-- <div class="field">
+                            <label for="editIsBlocked">Block</label>
+                            <select id="editIsBlocked">
+                                <option value="false">Yo‘q</option>
+                                <option value="true">Ha</option>
+                            </select>
+                        </div> -->
+                        <!-- <div class="field">
+                        </div> -->
+                        <div class="field">
+                            <label for="editAvatarFile">Avatarni yangilash</label>
+                            <input id="editAvatarFile" type="file" accept="image/png, image/jpeg, image/webp">
+                            <button type="button" id="removeAvatarBtn" class="btn-secondary">
+                                Avatarni o‘chirish
+                            </button>
+                        </div>
+
                     </div>
 
                     <div class="form-footer">
                         <div class="status-text" id="userFormStatus"></div>
-                        <button class="btn-primary" type="submit">Saqlash</button>
+                        <div class="form-actions">
+                            <button id="sendResetBtn" class="btn-secondary" type="button">
+                                <i class="fa-solid fa-key"></i> Parolni tiklash linki
+                            </button>
+                            <button class="btn-primary" type="submit">Saqlash</button>
+                        </div>
                     </div>
                 </form>
             </div>

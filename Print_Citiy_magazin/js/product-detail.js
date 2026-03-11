@@ -1,4 +1,5 @@
 import { supabase } from "../../Base/js/supabaseClient.js"
+import { showToast } from "../../Base/js/toast.js"
 
 const BUCKET_NAME = "products"
 const FINISHED_ORDER_STATUS = 3
@@ -297,6 +298,7 @@ const renderComments = () => {
 const loadProduct = async () => {
   if (!productId) {
     showState("Mahsulot id topilmadi.")
+    showToast("Mahsulot id topilmadi.", "error")
     return
   }
 
@@ -327,11 +329,13 @@ const loadProduct = async () => {
   if (error) {
     console.log("loadProduct error:", error)
     showState("Mahsulotni yuklashda xatolik yuz berdi.")
+    showToast("Mahsulotni yuklashda xatolik yuz berdi.", "error")
     return
   }
 
   if (!data) {
     showState("Mahsulot topilmadi.")
+    showToast("Mahsulot topilmadi.", "error")
     return
   }
 
@@ -344,15 +348,8 @@ const loadProduct = async () => {
 
   renderProduct()
   showContent()
-
-  const time = new Date().toLocaleTimeString("uz-UZ", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  })
-
   if (detailInfo) {
-    detailInfo.textContent = "Oxirgi yangilanish · " + time
+    detailInfo.textContent = ""
   }
 }
 
@@ -392,6 +389,7 @@ const loadComments = async () => {
       commentsList.innerHTML = `<div class="empty-comments">Fikrlarni yuklab bo‘lmadi.</div>`
     }
 
+    showToast("Fikrlarni yuklashda xatolik.", "error")
     return
   }
 
@@ -412,14 +410,8 @@ const loadComments = async () => {
   renderProduct()
   renderComments()
 
-  const time = new Date().toLocaleTimeString("uz-UZ", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  })
-
   if (commentsInfo) {
-    commentsInfo.textContent = "Oxirgi yangilanish · " + time
+    commentsInfo.textContent = ""
   }
 }
 
@@ -489,8 +481,9 @@ const checkCanReview = async () => {
 const toggleLike = async () => {
   if (!currentUser) {
     if (detailInfo) {
-      detailInfo.textContent = "Liked qilish uchun login qiling."
+      detailInfo.textContent = ""
     }
+    showToast("Liked qilish uchun login qiling.", "info")
     return
   }
 
@@ -505,8 +498,9 @@ const toggleLike = async () => {
     if (error) {
       console.log("like insert error:", error)
       if (detailInfo) {
-        detailInfo.textContent = "Liked qilishda xatolik yuz berdi."
+        detailInfo.textContent = ""
       }
+      showToast("Liked qilishda xatolik yuz berdi.", "error")
       return
     }
 
@@ -521,8 +515,9 @@ const toggleLike = async () => {
     if (error) {
       console.log("like delete error:", error)
       if (detailInfo) {
-        detailInfo.textContent = "Liked dan o‘chirishda xatolik yuz berdi."
+        detailInfo.textContent = ""
       }
+      showToast("Liked dan o‘chirishda xatolik yuz berdi.", "error")
       return
     }
 
@@ -556,18 +551,21 @@ const addToCart = () => {
   updateCartBadge()
 
   if (detailInfo) {
-    detailInfo.textContent = "Savatga qo‘shildi."
+    detailInfo.textContent = ""
   }
+  showToast("Savatga qo‘shildi.", "success")
 }
 
 const saveComment = async () => {
   if (!currentUser) {
     commentStatus.textContent = "Fikr yozish uchun login qiling."
+    showToast("Fikr yozish uchun login qiling.", "info")
     return
   }
 
   if (!myComment && !canReview) {
     commentStatus.textContent = "Faqat sotib olib, holati tugallangan (status = 3) mahsulotga fikr yozish mumkin."
+    showToast("Faqat sotib olib, holati tugallangan mahsulotga fikr yozish mumkin.", "info")
     return
   }
 
@@ -576,6 +574,7 @@ const saveComment = async () => {
 
   if (rating < 1 || rating > 5) {
     commentStatus.textContent = "Avval star tanlang."
+    showToast("Avval yulduz tanlang.", "error")
     return
   }
 
@@ -594,10 +593,12 @@ const saveComment = async () => {
     if (error) {
       console.log("update comment error:", error)
       commentStatus.textContent = "Tahrirlashda xatolik yuz berdi."
+      showToast("Fikrni tahrirlashda xatolik yuz berdi.", "error")
       return
     }
 
     commentStatus.textContent = "Fikr yangilandi."
+    showToast("Fikr yangilandi.", "success")
   } else {
     const { error } = await supabase
       .from("product_comments")
@@ -611,10 +612,12 @@ const saveComment = async () => {
     if (error) {
       console.log("insert comment error:", error)
       commentStatus.textContent = "Fikr qo‘shishda xatolik yuz berdi."
+      showToast("Fikr qo‘shishda xatolik yuz berdi.", "error")
       return
     }
 
     commentStatus.textContent = "Fikr saqlandi."
+    showToast("Fikr saqlandi.", "success")
   }
 
   await loadComments()
@@ -634,10 +637,12 @@ const deleteMyComment = async (commentId) => {
   if (error) {
     console.log("delete comment error:", error)
     commentStatus.textContent = "O‘chirishda xatolik yuz berdi."
+    showToast("Fikrni o‘chirishda xatolik yuz berdi.", "error")
     return
   }
 
   commentStatus.textContent = "Fikr o‘chirildi."
+  showToast("Fikr o‘chirildi.", "success")
   await loadComments()
 }
 

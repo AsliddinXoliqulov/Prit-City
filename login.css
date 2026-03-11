@@ -24,6 +24,7 @@ body {
   background: var(--bg-main);
   color: var(--text);
   padding: 18px;
+  overflow-x: hidden;
 }
 
 a {
@@ -242,6 +243,7 @@ input {
   gap: 18px;
 }
 
+
 .auth-right-badge {
   align-self: flex-start;
   padding: 6px 12px;
@@ -253,27 +255,10 @@ input {
   text-transform: uppercase;
 }
 
-.auth-right h2 {
-  font-size: 34px;
-  line-height: 1.2;
-}
-
-.auth-right p {
-  font-size: 15px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, .88);
-  max-width: 420px;
-}
-
-.auth-feature-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .auth-feature {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   min-height: 52px;
   border-radius: 18px;

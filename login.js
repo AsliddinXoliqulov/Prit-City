@@ -1,4 +1,6 @@
 import { supabase } from "./Base/js/supabaseClient.js"
+import { ROUTES } from "./Base/js/routes.js"
+import { showToast } from "./Base/js/toast.js"
 
 const loginTabBtn = document.getElementById("loginTabBtn")
 const registerTabBtn = document.getElementById("registerTabBtn")
@@ -23,23 +25,7 @@ const forgotForm = document.getElementById("forgotForm")
 const forgotEmail = document.getElementById("forgotEmail")
 const forgotStatus = document.getElementById("forgotStatus")
 
-const RESET_REDIRECT_URL = `${location.origin}/Reset_Pasword/reset.html`
-const showToast = (message, type = "success") => {
-  const toast = document.createElement("div")
-  toast.className = `toast toast-${type}`
-  toast.textContent = message
-
-  document.body.appendChild(toast)
-
-  setTimeout(() => {
-    toast.classList.add("toast-show")
-  }, 50)
-
-  setTimeout(() => {
-    toast.classList.remove("toast-show")
-    setTimeout(() => toast.remove(), 300)
-  }, 4000)
-}
+const RESET_REDIRECT_URL = `${location.origin}${ROUTES.resetPasswordPage}`
 const setStatus = (message = "") => {
   if (authStatus) authStatus.textContent = message
 }
@@ -86,15 +72,14 @@ const togglePasswordInput = (inputId, button) => {
 }
 
 const redirectByRole = (role) => {
-
   saveRoleToStorage(role)
 
   if (role === "admin" || role === "manager") {
-    location.href = "/Print_Citiy_admin/html/orders.html"
+    location.href = ROUTES.adminOrders
     return
   }
 
-  location.href = "/Print_Citiy_magazin/html/product.html"
+  location.href = ROUTES.marketRoot
 }
 
 const getProfileByUserId = async (userId) => {
@@ -213,7 +198,9 @@ loginForm?.addEventListener("submit", async (e) => {
     console.log("signIn result:", { data, error })
 
     if (error) {
-      setStatus(error.message || "Login yoki parol xato.")
+      const msg = error.message || "Login yoki parol xato."
+      setStatus(msg)
+      showToast(msg, "error")
       return
     }
 
@@ -221,6 +208,7 @@ loginForm?.addEventListener("submit", async (e) => {
 
     if (!user) {
       setStatus("Foydalanuvchi topilmadi.")
+      showToast("Foydalanuvchi topilmadi.", "error")
       return
     }
 
@@ -229,18 +217,22 @@ loginForm?.addEventListener("submit", async (e) => {
     console.log("profile result:", { profile, profileError })
 
     if (profileError) {
-      setStatus(profileError.message || "Profilni o‘qishda xatolik.")
+      const msg = profileError.message || "Profilni o‘qishda xatolik."
+      setStatus(msg)
+      showToast(msg, "error")
       return
     }
 
     if (!profile) {
       setStatus("Profil topilmadi.")
+      showToast("Profil topilmadi.", "error")
       return
     }
 
     if (profile.is_active === false) {
       await supabase.auth.signOut()
       setStatus("Sizning profilingiz faolsiz (bloklangan).")
+      showToast("Sizning profilingiz faolsiz (bloklangan).", "error")
       return
     }
 
@@ -251,6 +243,7 @@ loginForm?.addEventListener("submit", async (e) => {
     }
 
     setStatus("Muvaffaqiyatli kirdingiz.")
+    showToast("Muvaffaqiyatli kirdingiz.", "success")
 
     saveRoleToStorage(profile.role)
 
@@ -260,6 +253,7 @@ loginForm?.addEventListener("submit", async (e) => {
   } catch (err) {
     console.error("login submit error:", err)
     setStatus("Kutilmagan xatolik yuz berdi.")
+    showToast("Kutilmagan xatolik yuz berdi.", "error")
   }
 })
 

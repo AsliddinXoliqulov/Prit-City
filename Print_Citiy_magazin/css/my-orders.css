@@ -13,11 +13,17 @@
     align-items: center;
     flex-wrap: wrap;
 }
+.myorder_img {
+    width: 100%;
+
+}
 
 .tab-wrap {
     position: relative;
 }
-
+.hidden {
+    display: none;
+}
 .tab-btn {
     border-radius: 999px;
     border: 1px solid var(--table-border);

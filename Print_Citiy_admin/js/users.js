@@ -1,11 +1,14 @@
 import { supabase } from "../../Base/js/supabaseClient.js"
 import { requireRoles } from "../../Base/js/auth.js"
+import { showToast } from "../../Base/js/toast.js"
+import { ROUTES } from "../../Base/js/routes.js"
 
 let allUsers = []
 let activeRole = "user"
 let selectedUser = null
 let currentView = "table"
 
+const removeAvatarBtn = document.getElementById("removeAvatarBtn")
 const usersCardView = document.getElementById("usersCardView")
 const usersTableView = document.getElementById("usersTableView")
 const usersTableBody = document.getElementById("usersTableBody")
@@ -36,10 +39,78 @@ const userFormCloseBtn = document.getElementById("userFormCloseBtn")
 const userForm = document.getElementById("userForm")
 const userFormStatus = document.getElementById("userFormStatus")
 const editUserId = document.getElementById("editUserId")
+const editUserAvatarUrl = document.getElementById("editUserAvatarUrl")
+const editUserCode = document.getElementById("editUserCode")
+const editEmail = document.getElementById("editEmail")
 const editFullName = document.getElementById("editFullName")
 const editPhone = document.getElementById("editPhone")
 const editRole = document.getElementById("editRole")
-const editBlocked = document.getElementById("editBlocked")
+const editActive = document.getElementById("editActive")
+const editIsBlocked = document.getElementById("editIsBlocked")
+const editAvatarFile = document.getElementById("editAvatarFile")
+const sendResetBtn = document.getElementById("sendResetBtn")
+
+const removeAvatarForUser = async (userId, avatarUrl) => {
+  if (!userId) return
+
+  const possibleFiles = [
+    `${userId}/avatar.png`,
+    `${userId}/avatar.jpg`,
+    `${userId}/avatar.jpeg`,
+    `${userId}/avatar.webp`
+  ]
+
+  const { error: storageError } = await supabase.storage
+    .from("avatars")
+    .remove(possibleFiles)
+
+  if (storageError) {
+    console.log("admin avatar remove error:", storageError)
+  }
+
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .update({ avatar_url: null })
+    .eq("id", userId)
+
+  if (profileError) {
+    console.log("admin avatar profile clear error:", profileError)
+    throw new Error("Avatarni o‘chirishda xatolik yuz berdi.")
+  }
+
+  if (selectedUser && selectedUser.id === userId) {
+    selectedUser.avatar_url = null
+  }
+}
+
+removeAvatarBtn?.addEventListener("click", async () => {
+  const id = editUserId.value
+  if (!id) return
+
+  try {
+    removeAvatarBtn.disabled = true
+    userFormStatus.textContent = "Avatar o‘chirilmoqda..."
+
+    await removeAvatarForUser(id, editUserAvatarUrl?.value || "")
+
+    if (editUserAvatarUrl) editUserAvatarUrl.value = ""
+    if (editAvatarFile) editAvatarFile.value = ""
+
+    const foundUser = allUsers.find((u) => u.id === id)
+    if (foundUser) foundUser.avatar_url = null
+
+    userFormStatus.textContent = "Avatar o‘chirildi"
+    showToast("Avatar o‘chirildi", "success")
+    await loadUsers()
+  } catch (err) {
+    console.error(err)
+    userFormStatus.textContent = err.message || "Xatolik!"
+    showToast(err.message || "Avatarni o‘chirishda xatolik!", "error")
+  } finally {
+    removeAvatarBtn.disabled = false
+  }
+})
+
 
 const fmtDate = (iso) => {
   if (!iso) return "-"
@@ -191,7 +262,7 @@ const renderTable = (filtered) => {
   <button
     class="user-block-badge status-toggle ${isActive ? "" : "blocked"}"
     data-act="toggle-active"
-    data-id="${escapeHtml(u.id)}"
+    data-id="${escapeHtml(u.id)}"  
     type="button"
   >
     ${isActive ? "Faol" : "Nofaol"}
@@ -250,7 +321,7 @@ const loadUsers = async () => {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, phone, role, email, avatar_url, last_login_at, created_at, updated_at, is_active")
+    .select("id, user_code, full_name, phone, role, email, avatar_url, last_login_at, created_at, updated_at, is_active, is_blocked")
     .order("created_at", { ascending: false })
 
   if (error) {
@@ -261,16 +332,7 @@ const loadUsers = async () => {
 
   allUsers = data || []
   renderUsers()
-
-  const time = new Date().toLocaleTimeString("uz-UZ", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  })
-
-  usersInfo.textContent = "Oxirgi yangilanish · " + time
-//   console.log("data length:", data?.length)
-// console.log("data:", data)
+  usersInfo.textContent = "Yangilash"
 }
 
 const fillUserModal = (u) => {
@@ -278,7 +340,7 @@ const fillUserModal = (u) => {
 
   const isActive = u.is_active !== false
 
-  detailUserId.textContent = u.id || "-"
+  detailUserId.textContent = u.user_code || "-"
   detailUserName.textContent = u.full_name || "-"
   detailUserEmail.textContent = u.email || "-"
   detailUserPhone.textContent = u.phone || "-"
@@ -296,10 +358,15 @@ const fillUserModal = (u) => {
 
 const fillUserForm = (u) => {
   editUserId.value = u.id
+  if (editUserAvatarUrl) editUserAvatarUrl.value = u.avatar_url || ""
+  if (editUserCode) editUserCode.value = u.user_code || ""
+  if (editEmail) editEmail.value = u.email || ""
   editFullName.value = u.full_name || ""
   editPhone.value = u.phone || ""
   editRole.value = u.role || "user"
-  editBlocked.value = String(u.is_active === false)
+  editActive.value = String(u.is_active === false)
+  if (editIsBlocked) editIsBlocked.value = String(u.is_blocked === true)
+  if (editAvatarFile) editAvatarFile.value = ""
   userFormStatus.textContent = ""
 }
 
@@ -317,12 +384,76 @@ const toggleActive = async (id, isCurrentlyActive) => {
 
   if (error) {
     console.error(error)
-    alert("Holatni o‘zgartirishda xatolik")
+    showToast("Holatni o‘zgartirishda xatolik", "error")
     return
   }
 
   closeModal(userModal)
   await loadUsers()
+}
+
+const validateAvatarFile = (file) => {
+  if (!file) return { ok: true }
+
+  const allowedTypes = ["image/png", "image/jpeg", "image/webp"]
+  const maxSize = 5 * 1024 * 1024
+
+  if (!allowedTypes.includes(file.type)) {
+    return { ok: false, message: "Faqat png, jpg, jpeg yoki webp rasm yuklang." }
+  }
+
+  if (file.size > maxSize) {
+    return { ok: false, message: "Avatar hajmi 5 MB dan oshmasligi kerak." }
+  }
+
+  return { ok: true }
+}
+
+const uploadAvatarForUser = async (userId, file) => {
+  if (!userId || !file) return null
+
+  const ext = file.name.split(".").pop()?.toLowerCase() || "png"
+  const filePath = `${userId}/avatar.${ext}`
+
+  const { error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, file, { upsert: true })
+
+  if (uploadError) {
+    console.log("admin avatar upload error:", uploadError)
+    throw new Error("Avatar yuklashda xatolik yuz berdi.")
+  }
+
+  const { data } = supabase.storage
+    .from("avatars")
+    .getPublicUrl(filePath)
+
+  return data?.publicUrl || null
+}
+
+const sendResetLink = async () => {
+  const email = (selectedUser?.email || editEmail?.value || "").trim()
+  if (!email) {
+    showToast("Email topilmadi.", "error")
+    return
+  }
+
+  try {
+    sendResetBtn.disabled = true
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${location.origin}${ROUTES.resetPasswordPage}`
+    })
+
+    if (error) {
+      console.log("admin resetPasswordForEmail error:", error)
+      showToast(error.message || "Reset link yuborishda xatolik.", "error")
+      return
+    }
+
+    showToast("Parolni tiklash linki emailga yuborildi.", "success")
+  } finally {
+    sendResetBtn.disabled = false
+  }
 }
 
 const handleUserAction = (e) => {
@@ -376,31 +507,58 @@ userForm?.addEventListener("submit", async (e) => {
 
   userFormStatus.textContent = "Saqlanmoqda..."
 
-  const payload = {
-    full_name: editFullName.value.trim(),
-    phone: editPhone.value.trim(),
-    role: editRole.value,
-    is_active: editBlocked.value !== "true"
+  try {
+    const avatarFile = editAvatarFile?.files?.[0] || null
+
+    let avatarUrl = (editUserAvatarUrl?.value || "").trim() || null
+
+    if (avatarFile) {
+      const check = validateAvatarFile(avatarFile)
+      if (!check.ok) {
+        userFormStatus.textContent = check.message
+        showToast(check.message, "error")
+        return
+      }
+
+      avatarUrl = await uploadAvatarForUser(id, avatarFile)
+    }
+
+    const payload = {
+      full_name: editFullName.value.trim(),
+      phone: editPhone.value.trim(),
+      role: editRole.value,
+      email: (editEmail?.value || "").trim() || null,
+      avatar_url: avatarUrl,
+      is_active: editActive.value !== "true",
+      is_blocked: editIsBlocked?.value === "true"
+    }
+
+    const { error } = await supabase
+      .from("profiles")
+      .update(payload)
+      .eq("id", id)
+
+    if (error) {
+      console.error(error)
+      userFormStatus.textContent = "Xatolik!"
+      showToast("Saqlashda xatolik!", "error")
+      return
+    }
+
+    userFormStatus.textContent = "Saqlandi"
+    showToast("Saqlandi", "success")
+    closeModal(userFormModal)
+    await loadUsers()
+  } catch (err) {
+    console.error(err)
+    userFormStatus.textContent = err.message || "Xatolik!"
+    showToast(err.message || "Xatolik!", "error")
   }
-
-  const { error } = await supabase
-    .from("profiles")
-    .update(payload)
-    .eq("id", id)
-
-  if (error) {
-    console.error(error)
-    userFormStatus.textContent = "Xatolik!"
-    return
-  }
-
-  userFormStatus.textContent = "Saqlandi"
-  closeModal(userFormModal)
-  await loadUsers()
 })
 
 searchInput?.addEventListener("input", renderUsers)
 usersInfo?.addEventListener("click", loadUsers)
+sendResetBtn?.addEventListener("click", sendResetLink)
 
 userModal?.addEventListener("click", (e) => {
   const t = e.target

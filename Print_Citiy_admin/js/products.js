@@ -76,8 +76,15 @@ const normalizeProduct = (row) => {
     .map((x) => x.path)
     .filter(Boolean)
 
+  const comments = Array.isArray(row.product_comments) ? row.product_comments : []
+  const commentsCount = comments.length
+  const avgRating = commentsCount
+    ? comments.reduce((sum, item) => sum + Number(item.rating || 0), 0) / commentsCount
+    : 0
+
   return {
     id: row.id,
+    product_code: row.product_code || "",
     name: row.name || "",
     about: row.about || "",
     price: row.price || 0,
@@ -86,8 +93,8 @@ const normalizeProduct = (row) => {
     created_at: row.created_at,
     updated_at: row.updated_at,
     images,
-    commentsCount: 0,
-    avgRating: 0
+    commentsCount,
+    avgRating
   }
 }
 
@@ -138,6 +145,7 @@ const getFilteredProducts = (rows) => {
     const bySearch =
       !q ||
       String(p.id || "").toLowerCase().includes(q) ||
+      String(p.product_code || "").toLowerCase().includes(q) ||
       String(p.name || "").toLowerCase().includes(q)
 
     const byCat = !cat || p.category === cat
@@ -156,7 +164,7 @@ const renderGrid = (rows) => {
       <div class="product-card" data-id="${p.id}">
         <div class="product-thumb-wrap">
           <div class="product-top-badges">
-            <span class="id-chip mono">${String(p.id).slice(0, 8)}...</span>
+            <span class="id-chip mono">${p.product_code || "-"}</span>
             <span class="category-chip">${p.category || "-"}</span>
           </div>
 
@@ -168,7 +176,7 @@ const renderGrid = (rows) => {
         </div>
 
         <div class="product-body">
-          <div class="product-name">${p.name || "-"}</div>
+          <div class="product-name">${cutText(p.name, 40) || "-"}</div>
           <div class="product-about">${cutText(p.about, 84) || "-"}</div>
 
           <div class="product-meta">
@@ -219,9 +227,9 @@ const renderTable = (rows) => {
           }
         </td>
 
-        <td class="mono">${String(p.id).slice(0, 8)}...</td>
+        <td class="mono">${p.product_code || "-"}</td>
         <td>
-          <div class="table-name">${p.name || "-"}</div>
+          <div class="table-name">${cutText(p.name, 40) || "-"}</div>
           <div class="table-about">${cutText(p.about, 60) || "-"}</div>
         </td>
         <td>${p.category || "-"}</td>
@@ -300,6 +308,7 @@ const loadProducts = async () => {
     .from("products")
     .select(`
       id,
+      product_code,
       name,
       about,
       price,
@@ -307,7 +316,8 @@ const loadProducts = async () => {
       category,
       created_at,
       updated_at,
-      product_images(path, sort_order)
+      product_images(path, sort_order),
+      product_comments(rating)
     `)
     .order("created_at", { ascending: false })
 

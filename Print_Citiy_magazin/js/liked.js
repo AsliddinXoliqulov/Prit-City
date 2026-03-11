@@ -1,4 +1,5 @@
 import { supabase } from "../../Base/js/supabaseClient.js"
+import { showToast } from "../../Base/js/toast.js"
 
 const likedGrid = document.getElementById("likedGrid")
 const likedCount = document.getElementById("likedCount")
@@ -86,8 +87,9 @@ const loadLiked = async () => {
   currentUser = await getSessionUser()
 
   if (!currentUser) {
-    likedInfo.textContent = "Liked sahifani ko‘rish uchun login qiling."
+    likedInfo.textContent = ""
     likedGrid.innerHTML = `<div class="empty-row">Login bo‘lmagansiz.</div>`
+    showToast("Liked sahifani ko‘rish uchun login qiling.", "info")
     return
   }
 
@@ -111,15 +113,14 @@ const loadLiked = async () => {
     .order("created_at", { ascending: false })
 
   if (error) {
-    likedInfo.textContent = "Xatolik!"
+    likedInfo.textContent = ""
+    showToast("Liked mahsulotlarni yuklashda xatolik.", "error")
     return
   }
 
   likedProducts = normalizeRows(data || [])
   renderLiked()
-
-  const time = new Date().toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
-  likedInfo.textContent = "Oxirgi yangilanish · " + time
+  likedInfo.textContent = ""
 }
 
 likedGrid?.addEventListener("click", async (e) => {
@@ -135,11 +136,13 @@ likedGrid?.addEventListener("click", async (e) => {
     .eq("product_id", productId)
 
   if (error) {
-    likedInfo.textContent = "O‘chirishda xatolik!"
+    likedInfo.textContent = ""
+    showToast("Liked’dan o‘chirishda xatolik!", "error")
     return
   }
 
   await loadLiked()
+  showToast("Liked’dan o‘chirildi.", "success")
 })
 
 searchInput?.addEventListener("input", renderLiked)

@@ -94,50 +94,70 @@ const closeModal = (el) => {
 
 const openProductDetailFromOrder = (productId) => {
   if (!productId || productId === "-") return
-  window.location.href = `./product-detail.html?id=${productId}`
+  window.location.href = `./product-detail.html?id=${encodeURIComponent(productId)}`
+}
+
+const normalizeOrder = (row) => {
+  const items = safeArr(row.order_items)
+
+  return {
+    id: row.id,
+    order_code: row.order_code,
+    user_name: row.user_name,
+    user_email: row.user_email,
+    user_phone: row.user_phone,
+    address_text: row.address_text,
+    location_name: row.location_name,
+    message: row.message,
+    status: row.status,
+    total_price: row.total_price,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    latitude: row.latitude,
+    longitude: row.longitude,
+    admin_note: row.admin_note,
+    items: items.map((x) => ({
+      product_id: x.product_id ?? "-",
+      product_code: x.product_code ?? "-",
+      product_name: x.product_name ?? "-",
+      product_price: x.product_price ?? "-",
+      product_image: x.product_image ?? "",
+      qty: x.qty ?? 1
+    }))
+  }
 }
 
 const orderCard = (o) => {
-  const ids = safeArr(o.product_ids)
-  const names = safeArr(o.product_names)
-  const prices = safeArr(o.product_prices)
-  const counts = safeArr(o.product_counts)
-  const images = safeArr(o.product_images)
   const st = Number(o.status ?? 1)
 
-  let itemsHtml = ""
-  const maxLen = Math.max(ids.length, names.length, prices.length, counts.length, images.length)
+  const itemsHtml = o.items.length
+    ? o.items.map((item) => {
+        return `
+          <div class="order-item">
+            <div class="mono">${item.product_code || item.product_id || "-"}</div>
 
-  for (let i = 0; i < maxLen; i++) {
-    const pid = ids[i] ?? "-"
-    const nm = cutText(names[i] ?? "-", 30)
-    const pr = prices[i] ?? "-"
-    const pimg = images[i] ?? ""
-    const ct = counts[i] ?? 1
+            <div class="order-image order-product-link" data-product-id="${item.product_id}">
+              ${
+                item.product_image
+                  ? `<img src="${item.product_image}" alt="${item.product_name}" loading="lazy" />`
+                  : `<i class="fa-regular fa-image"></i>`
+              }
+            </div>
 
-    itemsHtml += `
-      <div class="order-item">
-        <div class="mono">${String(pid).slice(0, 8)}</div>
+            <div class="order-item-info">
+              <span class="order-item-name order-product-link" data-product-id="${item.product_id}">
+                ${cutText(item.product_name, 30)}
+              </span>
 
-        <div class="order-image order-product-link" data-product-id="${pid}">
-          ${
-            pimg
-              ? `<img src="${pimg}" alt="${nm}" loading="lazy" />`
-              : `<i class="fa-regular fa-image"></i>`
-          }
-        </div>
-
-        <div class="order-item-info">
-          <span class="order-item-name order-product-link" data-product-id="${pid}">${nm}</span>
-
-          <div class="small order-item-info-number">
-            <span class="price">Narx: ${pr}</span>
-            <span class="mono">Soni: ${ct}</span>
+              <div class="small order-item-info-number">
+                <span class="price">Narx: ${item.product_price}</span>
+                <span class="mono">Soni: ${item.qty}</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    `
-  }
+        `
+      }).join("")
+    : `<div class="small">Mahsulotlar yo‘q</div>`
 
   let statusButtons = ""
 
@@ -180,7 +200,7 @@ const orderCard = (o) => {
         <div>
           <div class="order-title">
             Buyurtma raqami -
-            <span class="mono">${o.id}</span>
+            <span class="mono">${o.order_code || o.id}</span>
             <span class="badge-soft ${statusClass}">${statusName(st)}</span>
           </div>
 
@@ -201,7 +221,7 @@ const orderCard = (o) => {
         </div>
       </div>
 
-      <div class="order-items">${itemsHtml || `<div class="small">Mahsulotlar yo‘q</div>`}</div>
+      <div class="order-items">${itemsHtml}</div>
 
       <div class="order-meta">
         <div class="small"><b>Manzil:</b> ${o.address_text || "-"}</div>
@@ -230,12 +250,20 @@ const renderOrders = () => {
 
   const list = orders.filter((o) => {
     const byTab = Number(o.status ?? 1) === activeTab
+
+    const itemText = o.items
+      .map((item) => `${item.product_name || ""} ${item.product_id || ""} ${item.product_code || ""}`)
+      .join(" ")
+      .toLowerCase()
+
     const bySearch =
       !q ||
+      String(o.order_code || "").toLowerCase().includes(q) ||
       String(o.id || "").toLowerCase().includes(q) ||
       String(o.user_name || "").toLowerCase().includes(q) ||
       String(o.user_phone || "").toLowerCase().includes(q) ||
-      String(o.user_email || "").toLowerCase().includes(q)
+      String(o.user_email || "").toLowerCase().includes(q) ||
+      itemText.includes(q)
 
     return byTab && bySearch
   })
@@ -252,32 +280,6 @@ const renderOrders = () => {
   if (cancelledCount) cancelledCount.textContent = orders.filter((o) => Number(o.status) === 0).length
 }
 
-const normalizeOrder = (row) => {
-  const items = safeArr(row.order_items)
-
-  return {
-    id: row.id,
-    user_name: row.user_name,
-    user_email: row.user_email,
-    user_phone: row.user_phone,
-    address_text: row.address_text,
-    location_name: row.location_name,
-    message: row.message,
-    status: row.status,
-    total_price: row.total_price,
-    created_at: row.created_at,
-    updated_at: row.updated_at,
-    latitude: row.latitude,
-    longitude: row.longitude,
-    admin_note: row.admin_note,
-    product_ids: items.map((x) => x.product_id ?? "-"),
-    product_names: items.map((x) => x.product_name ?? "-"),
-    product_prices: items.map((x) => x.product_price ?? "-"),
-    product_counts: items.map((x) => x.qty ?? 1),
-    product_images: items.map((x) => x.product_image ?? "")
-  }
-}
-
 const fetchOrders = async () => {
   if (ordersInfo) ordersInfo.textContent = "Yangilanmoqda..."
 
@@ -285,6 +287,7 @@ const fetchOrders = async () => {
     .from("orders")
     .select(`
       id,
+      order_code,
       user_name,
       user_email,
       user_phone,
@@ -298,7 +301,14 @@ const fetchOrders = async () => {
       admin_note,
       created_at,
       updated_at,
-      order_items(product_id,product_name,product_image,product_price,qty)
+      order_items(
+        product_id,
+        product_code,
+        product_name,
+        product_image,
+        product_price,
+        qty
+      )
     `)
     .order("created_at", { ascending: false })
 
@@ -354,6 +364,7 @@ const openMapModal = (orderId) => {
   if (!o) return
 
   const parsed = parseLatLng(o.latitude, o.longitude)
+
   if (mapText) {
     mapText.textContent = parsed ? `${o.location_name || ""} ${parsed.raw}`.trim() : "Map yo‘q"
   }

@@ -1,4 +1,5 @@
 import { supabase } from "../../Base/js/supabaseClient.js"
+import { showToast } from "../../Base/js/toast.js"
 
 const productsGrid = document.getElementById("productsGrid")
 const productsCount = document.getElementById("productsCount")
@@ -151,9 +152,7 @@ const loadProducts = async () => {
 
   allProducts = normalizeProducts(data || [])
   renderProducts()
-
-  const time = new Date().toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
-  productsInfo.textContent = "Oxirgi yangilanish · " + time
+  productsInfo.textContent = ""
 }
 
 const loadLikedIds = async () => {
@@ -176,7 +175,8 @@ const loadLikedIds = async () => {
 
 const toggleLike = async (productId) => {
   if (!currentUser) {
-    productsInfo.textContent = "Liked qilish uchun login qiling."
+    productsInfo.textContent = ""
+    showToast("Liked qilish uchun login qiling.", "info")
     return
   }
 
@@ -189,7 +189,8 @@ const toggleLike = async (productId) => {
     })
 
     if (error) {
-      productsInfo.textContent = "Liked qilishda xatolik!"
+      productsInfo.textContent = ""
+      showToast("Liked qilishda xatolik!", "error")
       return
     }
 
@@ -202,7 +203,8 @@ const toggleLike = async (productId) => {
       .eq("product_id", productId)
 
     if (error) {
-      productsInfo.textContent = "Liked dan o‘chirishda xatolik!"
+      productsInfo.textContent = ""
+      showToast("Liked dan o‘chirishda xatolik!", "error")
       return
     }
 
@@ -234,7 +236,8 @@ const addToCart = (productId) => {
 
   localStorage.setItem("pc_cart", JSON.stringify(cart))
   updateCartBadge()
-  productsInfo.textContent = "Savatga qo‘shildi."
+  productsInfo.textContent = ""
+  showToast("Savatga qo‘shildi.", "success")
 }
 
 productsGrid?.addEventListener("click", (e) => {

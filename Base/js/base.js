@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient.js"
+import { ROUTES } from "./routes.js"
 
 const root = document.documentElement
 const themeToggle = document.getElementById("themeToggle")
@@ -55,13 +56,13 @@ const updateProfileLink = async () => {
   const user = await getUser()
 
   if (!user) {
-    profileLink.href = "/index.html"
+    profileLink.href = ROUTES.login
     profileLink.innerHTML = `
       <i class="fa-solid fa-right-to-bracket"></i>
       Login
     `
   } else {
-    profileLink.href = "/Print_Citiy_magazin/html/profile.html"
+    profileLink.href = ROUTES.marketProfile
     profileLink.innerHTML = `
       <i class="fa-regular fa-user"></i>
       Profil

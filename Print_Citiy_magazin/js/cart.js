@@ -1,4 +1,5 @@
 import { supabase } from "../../Base/js/supabaseClient.js"
+import { showToast } from "../../Base/js/toast.js"
 
 const cartList = document.getElementById("cartList")
 const cartCount = document.getElementById("cartCount")
@@ -229,6 +230,7 @@ function initializeMap() {
   if (mapReady) return
   if (typeof L === "undefined") {
     setInfo("Xarita yuklanmadi.", false)
+    showToast("Xarita yuklanmadi.", "error")
     return
   }
 
@@ -270,6 +272,7 @@ function initializeMap() {
       const result = await geocodeQuery(q, controller.signal)
       if (!result) {
         setInfo("Manzil topilmadi.", false)
+        showToast("Manzil topilmadi.", "error")
         return
       }
 
@@ -281,6 +284,7 @@ function initializeMap() {
       selectedLocationName = result.display_name || `${selectedLat.toFixed(6)}, ${selectedLng.toFixed(6)}`
       orderAddress.value = selectedLocationName
       setInfo("Manzil topildi.")
+      showToast("Manzil topildi.", "success")
     }, 700)
   })
 
@@ -294,6 +298,7 @@ function initializeMap() {
     const result = await geocodeQuery(q)
     if (!result) {
       setInfo("Manzil topilmadi.", false)
+      showToast("Manzil topilmadi.", "error")
       return
     }
 
@@ -305,6 +310,7 @@ function initializeMap() {
     selectedLocationName = result.display_name || `${selectedLat.toFixed(6)}, ${selectedLng.toFixed(6)}`
     orderAddress.value = selectedLocationName
     setInfo("Manzil topildi.")
+    showToast("Manzil topildi.", "success")
   })
 
   setTimeout(() => {
@@ -324,23 +330,27 @@ async function createOrder() {
 
   if (!cart.length) {
     setInfo("Savat bo‘sh.", false)
+    showToast("Savat bo‘sh.", "error")
     return
   }
 
   if (!name) {
     setInfo("Ismni kiriting.", false)
+    showToast("Ismni kiriting.", "error")
     orderName.focus()
     return
   }
 
   if (!phone) {
     setInfo("Telefon raqamni kiriting.", false)
+    showToast("Telefon raqamni kiriting.", "error")
     orderPhone.focus()
     return
   }
 
   if (isDelivery && !addressText) {
     setInfo("Manzilni kiriting yoki xaritadan tanlang.", false)
+    showToast("Manzilni kiriting yoki xaritadan tanlang.", "error")
     orderAddress.focus()
     return
   }
@@ -396,9 +406,11 @@ async function createOrder() {
 
     const orderCodeText = orderData?.order_code ? ` Buyurtma raqami: ${orderData.order_code}` : ""
     setInfo(`Buyurtma muvaffaqiyatli saqlandi.${orderCodeText}`)
+    showToast(`Buyurtma muvaffaqiyatli saqlandi.${orderCodeText}`, "success")
   } catch (error) {
     console.error(error)
     setInfo("Buyurtmani saqlashda xatolik yuz berdi.", false)
+    showToast("Buyurtmani saqlashda xatolik yuz berdi.", "error")
   } finally {
     setConfirmLoading(false)
   }
@@ -438,11 +450,13 @@ clearCartBtn?.addEventListener("click", () => {
   saveCart()
   renderCart()
   setInfo("Savat tozalandi.")
+  showToast("Savat tozalandi.", "success")
 })
 
 checkoutBtn?.addEventListener("click", () => {
   if (!cart.length) {
     setInfo("Savat bo‘sh.", false)
+    showToast("Savat bo‘sh.", "error")
     return
   }
 
