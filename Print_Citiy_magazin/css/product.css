@@ -7,6 +7,7 @@ html {
     padding: 26px;
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
+    border-radius:5px 5px 50px 50px ;
     background:
         radial-gradient(circle at top left, rgba(22, 163, 74, .10), transparent 35%),
         radial-gradient(circle at bottom right, rgba(11, 79, 138, .14), transparent 38%),
@@ -196,6 +197,7 @@ html {
     align-items: center;
 }
 
+
 .hero-visual {
     position: relative;
     width: 280px;
@@ -238,14 +240,29 @@ html {
 .hero-box i {
     pointer-events: none;
 }
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
 
+#loadMoreBtn {
+  min-width: 180px;
+}
+.load-more-wrap.hidden {
+  display: none;
+}
 .hero-box-main {
-    inset: 50% auto auto 50%;
+    /* inset: 50% auto auto 50%; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 150px;
     height: 150px;
     border-radius: 30px;
     font-size: 56px;
+    animation: mainFloat 5s ease-in-out infinite;
 }
 
 .hero-box-top {
@@ -321,7 +338,7 @@ html {
         grid-template-columns: 1fr;
     }
 
-    .hero-right {
+    .hero-stats {
         display: none;
     }
 }
@@ -519,3 +536,122 @@ html {
         width: 100%;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.hero-visual {
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+.hero-box-main {
+  animation: mainFloat 5s ease-in-out infinite;
+}
+
+.hero-box-top {
+  animation: topFloat 4s ease-in-out infinite;
+}
+
+.hero-box-bottom {
+  animation: bottomFloat 4.8s ease-in-out infinite;
+}
+
+.hero-orb-1 {
+  animation: orbOneMove 7s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+  animation: orbTwoMove 8s ease-in-out infinite;
+}
+
+.logo-dark,
+.logo-light {
+  animation: logoBreath 3.5s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes mainFloat {
+  0%,100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+}
+
+@keyframes topFloat {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(4px);
+  }
+}
+
+@keyframes bottomFloat {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(10px) translateX(-4px);
+  }
+}
+
+@keyframes orbOneMove {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.08) translate(-8px, -10px);
+  }
+}
+
+@keyframes orbTwoMove {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.06) translate(10px, 12px);
+  }
+}
+
+@keyframes logoBreath {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+

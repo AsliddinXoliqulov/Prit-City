@@ -68,7 +68,7 @@
             <section class="card hero-card">
                 <div class="hero-content">
                     <div class="hero-left">
-                        <span class="badge-soft hero-badge">Print City Market</span>
+                        <!-- <span class="badge-soft hero-badge">Print City Market</span> -->
                         <h1 class="hero-title">Sifatli buyumlar va poligrafiya mahsulotlari</h1>
                         <p class="hero-text">
                             O‘zingizga kerakli mahsulotni toping, liked qiling, savatga qo‘shing va tez buyurtma bering.
@@ -151,6 +151,11 @@
                 </div>
 
                 <div id="productsGrid" class="products-grid"></div>
+                <div class="load-more-wrap">
+                    <button id="loadMoreBtn" class="btn-secondary" type="button">
+                        Ko‘proq ko‘rish
+                    </button>
+                </div>                           
             </section>
 
 
@@ -176,7 +181,85 @@
                     </a>
                 </div>
             </div>
+            <section class="contact-section">
+    <div class="container">
 
+        <div class="contact-header">
+            <h2>Biz bilan bog‘laning</h2>
+            <p>Savollaringiz bo‘lsa yoki buyurtma bermoqchi bo‘lsangiz biz bilan bog‘laning</p>
+        </div>
+
+        <div class="contact-grid">
+
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h4>Manzil</h4>
+                        <p>Toshkent shahri, Chilonzor tumani</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <h4>Telefon</h4>
+                        <p>+998 90 123 45 67</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>info@printcitiy.uz</p>
+                    </div>
+                </div>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Ismingiz" required>
+                <input type="email" placeholder="Email manzil" required>
+                <textarea rows="5" placeholder="Xabaringiz"></textarea><br>
+                <button  type="submit" class="btn-primary">
+                    Xabar yuborish
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+    <div class="container footer-grid">
+
+        <div class="footer-col">
+            <h3>Print Citiy</h3>
+            <p>Print Citiy — sizning barcha bosma <br> xizmatlaringiz uchun zamonaviy platforma.</p>
+        </div>
+<!-- 
+        <div class="footer-col">
+            <h4>Havolalar</h4>
+            <ul>
+                <li><a href="#">Bosh sahifa</a></li>
+                <li><a href="#">Mahsulotlar</a></li>
+                <li><a href="#">Buyurtmalar</a></li>
+                <li><a href="#">Profil</a></li>
+            </ul>
+        </div> -->
+
+        <div class="footer-col">
+            <h4>Ijtimoiy tarmoqlar</h4>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-facebook"></i>Facebook</a>
+                <a href="#"><i class="fa-brands fa-telegram"></i>Teagram</a>
+                <a href="#"><i class="fa-brands fa-instagram"></i>Instagram</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Print Citiy. Barcha huquqlar himoyalangan.
+    </div>
+</footer>
     <script type="module" src="../massage/massage.js"></script>
     <script type="module" src="../../Base/js/base.js"></script>
     <script type="module" src="../js/product.js"></script>

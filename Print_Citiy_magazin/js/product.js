@@ -8,6 +8,10 @@ const searchInput = document.getElementById("searchInput")
 const categoryFilter = document.getElementById("categoryFilter")
 const likedCountBadge = document.getElementById("likedCountBadge")
 const cartCountBadge = document.getElementById("cartCountBadge")
+const loadMoreBtn = document.getElementById("loadMoreBtn")
+
+let visibleCount = 10
+const step = 10
 
 let allProducts = []
 let currentUser = null
@@ -33,20 +37,27 @@ const getSessionUser = async () => {
 const updateCartBadge = () => {
   const cart = JSON.parse(localStorage.getItem("pc_cart") || "[]")
   const total = cart.reduce((sum, item) => sum + Number(item.qty || 0), 0)
-  cartCountBadge.textContent = total
+
+  if (cartCountBadge) {
+    cartCountBadge.textContent = total
+  }
 }
 
 const updateLikedBadge = () => {
-  likedCountBadge.textContent = likedIds.length
+  if (likedCountBadge) {
+    likedCountBadge.textContent = likedIds.length
+  }
 }
 
 const normalizeProducts = (rows) => {
   return rows.map((row) => {
-    const images = (row.product_images || [])
-      .slice()
-      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
-      .map((x) => x.path)
-      .filter(Boolean)
+    const images = Array.isArray(row.product_images)
+      ? row.product_images
+          .slice()
+          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+          .map((x) => x.path)
+          .filter(Boolean)
+      : []
 
     const comments = Array.isArray(row.product_comments) ? row.product_comments : []
     const commentsCount = comments.length
@@ -56,10 +67,11 @@ const normalizeProducts = (rows) => {
 
     return {
       id: row.id,
-      name: row.name,
-      about: row.about,
-      price: row.price,
-      category: row.category,
+      product_code: row.product_code || "-",
+      name: row.name || "-",
+      about: row.about || "",
+      price: Number(row.price || 0),
+      category: row.category || "",
       images,
       commentsCount,
       avgRating
@@ -67,20 +79,40 @@ const normalizeProducts = (rows) => {
   })
 }
 
-const renderProducts = () => {
-  const q = String(searchInput.value || "").trim().toLowerCase()
-  const category = categoryFilter.value
+const getFilteredProducts = () => {
+  const search = String(searchInput?.value || "").trim().toLowerCase()
+  const category = String(categoryFilter?.value || "").trim().toLowerCase()
 
-  const filtered = allProducts.filter((p) => {
-    const bySearch = !q || String(p.name || "").toLowerCase().includes(q)
-    const byCategory = !category || p.category === category
-    return bySearch && byCategory
+  return allProducts.filter((item) => {
+    const name = String(item.name || "").toLowerCase()
+    const code = String(item.product_code || "").toLowerCase()
+    const itemCategory = String(item.category || "").toLowerCase()
+
+    const matchSearch = !search || name.includes(search) || code.includes(search)
+    const matchCategory = !category || itemCategory === category
+
+    return matchSearch && matchCategory
   })
+}
 
-  productsCount.textContent = `${filtered.length} ta`
+const renderProducts = () => {
+  const filtered = getFilteredProducts()
+  const visibleProducts = filtered.slice(0, visibleCount)
 
-  productsGrid.innerHTML = filtered.length
-    ? filtered.map((p) => {
+  if (productsCount) {
+    productsCount.textContent = `${filtered.length} ta`
+  }
+
+  if (productsInfo) {
+    productsInfo.textContent = filtered.length
+      ? `${visibleProducts.length} tasi ko‘rsatildi`
+      : "Mahsulot topilmadi"
+  }
+
+  if (!productsGrid) return
+
+  productsGrid.innerHTML = visibleProducts.length
+    ? visibleProducts.map((p) => {
         const liked = likedIds.includes(p.id)
         const img = p.images[0] || ""
 
@@ -89,13 +121,14 @@ const renderProducts = () => {
             <div class="product-thumb-wrap">
               ${
                 img
-                  ? `<img class="product-thumb" src="${img}" alt="${p.name || ""}" loading="lazy">`
+                  ? `<img class="product-thumb" src="${img}" alt="${p.name}" loading="lazy">`
                   : `<div class="product-thumb-empty"><i class="fa-regular fa-image"></i></div>`
               }
             </div>
 
             <div class="product-card-body">
-              <div class="product-name">${p.name || "-"}</div>
+              <div class="product-name">${p.name}</div>
+              <div class="small">Kod: ${p.product_code || "-"}</div>
               <div class="product-about">${cutText(p.about, 84) || "-"}</div>
 
               <div class="product-meta">
@@ -110,8 +143,10 @@ const renderProducts = () => {
 
               <div class="product-actions">
                 <a class="btn-secondary" href="./product-detail.html?id=${p.id}">
-                <i class="fa-regular fa-eye"></i> Ko‘rish
+                  <i class="fa-regular fa-eye"></i>
+                  Ko‘rish
                 </a>
+
                 <button class="btn-secondary like-btn ${liked ? "active" : ""}" data-id="${p.id}" type="button">
                   <i class="${liked ? "fa-solid" : "fa-regular"} fa-heart"></i>
                   Liked
@@ -127,15 +162,26 @@ const renderProducts = () => {
         `
       }).join("")
     : `<div class="empty-row">Mahsulot topilmadi.</div>`
+
+  if (loadMoreBtn?.parentElement) {
+    if (filtered.length > visibleCount) {
+      loadMoreBtn.parentElement.classList.remove("hidden")
+    } else {
+      loadMoreBtn.parentElement.classList.add("hidden")
+    }
+  }
 }
 
 const loadProducts = async () => {
-  productsInfo.textContent = "Yuklanmoqda..."
+  if (productsInfo) {
+    productsInfo.textContent = "Yuklanmoqda..."
+  }
 
   const { data, error } = await supabase
     .from("products")
     .select(`
       id,
+      product_code,
       name,
       about,
       price,
@@ -146,13 +192,17 @@ const loadProducts = async () => {
     .order("created_at", { ascending: false })
 
   if (error) {
-    productsInfo.textContent = "Xatolik!"
+    console.error(error)
+    if (productsInfo) {
+      productsInfo.textContent = "Xatolik yuz berdi."
+    }
+    showToast("Mahsulotlarni yuklashda xatolik!", "error")
     return
   }
 
   allProducts = normalizeProducts(data || [])
+  visibleCount = 10
   renderProducts()
-  productsInfo.textContent = ""
 }
 
 const loadLikedIds = async () => {
@@ -164,51 +214,64 @@ const loadLikedIds = async () => {
     return
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("liked_products")
     .select("product_id")
     .eq("user_id", currentUser.id)
+
+  if (error) {
+    console.error(error)
+    likedIds = []
+    updateLikedBadge()
+    return
+  }
 
   likedIds = (data || []).map((x) => x.product_id)
   updateLikedBadge()
 }
 
 const toggleLike = async (productId) => {
+  const id = String(productId)
+
   if (!currentUser) {
-    productsInfo.textContent = ""
     showToast("Liked qilish uchun login qiling.", "info")
     return
   }
 
-  const alreadyLiked = likedIds.includes(productId)
+  const numericId = isNaN(Number(id)) ? id : Number(id)
+  const alreadyLiked = likedIds.includes(numericId)
 
   if (!alreadyLiked) {
-    const { error } = await supabase.from("liked_products").insert({
-      user_id: currentUser.id,
-      product_id: productId
-    })
+    const { error } = await supabase
+      .from("liked_products")
+      .insert({
+        user_id: currentUser.id,
+        product_id: numericId
+      })
 
     if (error) {
-      productsInfo.textContent = ""
+      console.error(error)
       showToast("Liked qilishda xatolik!", "error")
       return
     }
 
-    likedIds.push(productId)
+    likedIds.push(numericId)
+    showToast("Liked qilindi.", "success")
   } else {
     const { error } = await supabase
       .from("liked_products")
       .delete()
       .eq("user_id", currentUser.id)
-      .eq("product_id", productId)
+      .eq("product_id", numericId)
 
     if (error) {
-      productsInfo.textContent = ""
+      console.error(error)
       showToast("Liked dan o‘chirishda xatolik!", "error")
       return
     }
 
-    likedIds = likedIds.filter((id) => id !== productId)
+    likedIds = likedIds.filter((itemId) => itemId !== numericId)
+    showToast("Liked dan olib tashlandi.", "success")
   }
 
   updateLikedBadge()
@@ -216,17 +279,20 @@ const toggleLike = async (productId) => {
 }
 
 const addToCart = (productId) => {
-  const p = allProducts.find((x) => x.id === productId)
+  const id = isNaN(Number(productId)) ? productId : Number(productId)
+  const p = allProducts.find((x) => x.id === id)
+
   if (!p) return
 
   const cart = JSON.parse(localStorage.getItem("pc_cart") || "[]")
-  const found = cart.find((x) => x.product_id === p.id)
+  const found = cart.find((x) => String(x.product_id) === String(p.id))
 
   if (found) {
     found.qty += 1
   } else {
     cart.push({
       product_id: p.id,
+      product_code: p.product_code || "-",
       product_name: p.name,
       product_price: Number(p.price || 0),
       product_image: p.images[0] || "",
@@ -236,7 +302,6 @@ const addToCart = (productId) => {
 
   localStorage.setItem("pc_cart", JSON.stringify(cart))
   updateCartBadge()
-  productsInfo.textContent = ""
   showToast("Savatga qo‘shildi.", "success")
 }
 
@@ -253,8 +318,20 @@ productsGrid?.addEventListener("click", (e) => {
   }
 })
 
-searchInput?.addEventListener("input", renderProducts)
-categoryFilter?.addEventListener("change", renderProducts)
+loadMoreBtn?.addEventListener("click", () => {
+  visibleCount += step
+  renderProducts()
+})
+
+searchInput?.addEventListener("input", () => {
+  visibleCount = 10
+  renderProducts()
+})
+
+categoryFilter?.addEventListener("change", () => {
+  visibleCount = 10
+  renderProducts()
+})
 
 const init = async () => {
   updateCartBadge()

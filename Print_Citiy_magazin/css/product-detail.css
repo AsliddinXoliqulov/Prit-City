@@ -10,7 +10,9 @@
     position: relative;
     overflow: hidden;
 }
-
+.product-card{
+    display: flex;
+}
 .detail-card::before,
 .comments-card::before {
     content: "";

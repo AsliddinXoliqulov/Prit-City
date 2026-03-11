@@ -78,7 +78,6 @@ const renderCart = () => {
 
             <div class="cart-meta">
               <span class="price">${money(item.product_price)}</span>
-              <span class="small">ID: ${String(item.product_id).slice(0, 8)}...</span>
             </div>
 
             <div class="cart-actions">
@@ -94,7 +93,6 @@ const renderCart = () => {
                 </button>
               </div>
 
-              <div class="price">${money(Number(item.product_price || 0) * Number(item.qty || 0))}</div>
 
               <button class="btn-danger remove-btn" data-id="${item.product_id}" type="button">
                 <i class="fa-regular fa-trash-can"></i> O‘chirish
@@ -105,6 +103,7 @@ const renderCart = () => {
       `).join("")
     : `<div class="empty-row">Savat bo‘sh.</div>`
 }
+              // <div class="price">${money(Number(item.product_price || 0) * Number(item.qty || 0))}</div>
 
 const syncModalSummary = () => {
   modalItemsCount.textContent = getItemsCount()
